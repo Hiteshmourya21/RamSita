@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAMSITA-2025</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+  }
+
+  .container {
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 20px;
+    overflow: hidden;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background: #f8f8f8;
+  }
+
+  header .back-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+
+  }
+
+  header .back-button a {
+    text-decoration: none;
+
+  }
+
+  header h1 {
+    margin: 0 auto;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+  }
+
+  #venueSubmit input {
+    width: 25%;
+    padding: 5px;
+    font-size: large;
+    position: relative;
+    left: 73%;
+    margin: 5px;
+    background-color: #45a049;
+    border: none;
+    border-radius: 10px;
+    color: white;
+  }
+
+  table th,
+  table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+
+
+  table td {
+    background: #fff;
+  }
+
+#venueDetilis{
+  width: 25em;
+    font-size: 16px;
+    padding: 1px;
+}
+  #VenueRoom{
+    width: 30%;
+    padding: 2px;
+    font-size: 17px;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background: #f8f8f8;
+  }
+
+  header .back-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  header h1 {
+    margin: 0 auto;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  
+
+  table th {
+    background: #f1f1f1;
+    font-weight: bold;
+    width: 30em;
+  }
+
+  .submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .submit-btn:hover {
+    background-color: #45a049;
+  }
+
+
+
+  header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .back-button {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+  }
+
+  .back-button a {
+    text-decoration: none;
+  }
+
+  .title {
+    font-size: 20px;
+    color: #9C27B0;
+    border-bottom: 2px solid #FFD740;
+    margin-bottom: 16px;
+    padding-bottom: 4px;
+  }
+
+  .author-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .author-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+    position: relative;
+    left: 10px;
+  }
+
+  .author-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .author-name {
+    flex: 1;
+    margin-left: 12px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .email-button {
+    font-size: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    position: relative;
+    left: -30px;
+  }
+
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .add-Paper {
+    padding: 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    background-color: #9c27b0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <header>
+      <button class="back-button"><a href="http://127.0.0.1:5500/Admin.html"> <strong>←</strong> </a></button>
+      <h1>RAMSITA-2025</h1>
+    </header>
+    <table>
+      <tr>
+        <th>Venue :- 
+            <select name="cars" id="VenueRoom">
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="opel">Opel</option>
+              <option value="audi">Audi</option>
+            </select>
+     
+        </th>
+        <td>
+        <th> Date:-
+          <input id="appointment-time" type="date" name="appointment-time" value="13:30" /></td>
+        </th>
+        </td>
+        <td>
+        <th>Time:-
+          <input id="appointment-time" type="time" name="appointment-time" value="13:30" /></td>
+        </th>
+        </td>
+
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <th></th>
+        <th>Name</th>
+
+       
+      </tr>
+      <tr>
+        <td>Track 1</td>
+        <!--  -->
+        <td>
+          <form action="/action_page.php">
+            <select name="cars" id="venueDetilis">
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="opel">Opel</option>
+              <option value="audi">Audi</option>
+            </select>
+          </form>
+        </td>
+
+        <td></td>
+
+
+      </tr>
+      <tr>
+        <td>Supervisors</td>
+
+        <td>
+          <form action="/action_page.php">
+            <select name="cars" id="venueDetilis">
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="opel">Opel</option>
+              <option value="audi">Audi</option>
+            </select>
+          </form>
+        </td>
+
+        <td></td>
+
+
+      </tr>
+      <tr>
+        <td>Session Chair</td>
+
+        <td>
+          <form action="/action_page.php">
+            <select name="cars" id="venueDetilis">
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="opel">Opel</option>
+              <option value="audi">Audi</option>
+            </select>
+          </form>
+        </td>
+
+
+
+      </tr>
+      <tr>
+        <td>Rapporteur</td>
+
+        <td>
+          <form action="/action_page.php">
+            <select name="cars" id="venueDetilis">
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="opel">Opel</option>
+              <option value="audi">Audi</option>
+            </select>
+          </form>
+        </td>
+
+
+
+      </tr>
+      <tr>
+        <td>Faculty Coordinator</td>
+
+        <td>
+          <form action="/action_page.php">
+            <select name="cars" id="venueDetilis">
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="opel">Opel</option>
+              <option value="audi">Audi</option>
+            </select>
+          </form>
+        </td>
+        <td></td>
+      </tr>
+    </table>
+    <form action="/action_page.php" id="venueSubmit">
+      <input type="submit" value="Submit">
+  </div>
+
+
+
+
+  <div class="container">
+    <header>
+      <button class="back-button"><a href="http://127.0.0.1:5500/Admin.html"> <strong>←</strong></a></button>
+      <h1>RAMSITA - 2025<br>Presentation Paper</h1>
+    </header>
+    <table>
+      <thead>
+        <tr>
+          <th>Paper ID</th>
+          <th>Paper Title</th>
+          <th>Author Name</th>
+          <th>Present</th>
+          <th>Marks</th>
+          <th>Submit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="4">219</td>
+          <td rowspan="4">Carbon Compass: Real-Time Tracking And Solutions For a Sustainable Future</td>
+          <td>Aarushi Chouhan</td>
+          <td rowspan="4"></td>
+          <td rowspan="4"></td>
+          <td rowspan="4"><button class="submit-btn">Submit</button></td>
+        </tr>
+        <tr>
+          <td>Akshat Tiwari</td>
+        </tr>
+        <tr>
+          <td>Arun Patidar</td>
+        </tr>
+        <tr>
+          <td>Chirag Tiwari</td>
+        </tr>
+        <tr>
+          <td rowspan="6">228</td>
+          <td rowspan="6">Empowering Connections: A Matrimonial Solution For The Down Syndrome Community</td>
+          <td>Archana Singh</td>
+          <td rowspan="6"></td>
+          <td rowspan="6"></td>
+          <td rowspan="6"><button class="submit-btn" style="background-color: red;">Pending</button></td>
+        </tr>
+        <tr>
+          <td>Ayana Lala</td>
+        </tr>
+        <tr>
+          <td>Bhumika Tekam</td>
+        </tr>
+        <tr>
+          <td>Jyoti Bhowmick</td>
+        </tr>
+        <tr>
+          <td>Dr. Shilpa Bhalerao</td>
+        </tr>
+        <tr>
+          <td>Prof. Vandana Kate</td>
+        </tr>
+      </tbody>
+
+    </table>
+    <button class="add-work add-Paper">
+      <span>+ Add work</span>
+    </button>
+  </div>
+
+
+
+
+  <div class="container">
+    <header>
+      <button class="back-button"><a href="http://127.0.0.1:5500/Admin.html"> <strong>←</strong></a></button>
+    </header>
+    <h1 class="title">Authors</h1>
+    <div class="author-list">
+      <div class="author-item">
+        <div class="author-icon" style="background-color: #FF5722;">A</div>
+        <span class="author-name">Arun Patidar</span>
+        <button class="email-button">&#9993;</button>
+      </div>
+      <div class="author-item">
+        <div class="author-icon" style="background-color: #2196F3;">A</div>
+        <span class="author-name">Akshat Tiwari</span>
+        <button class="email-button">&#9993;</button>
+      </div>
+      <div class="author-item">
+        <div class="author-icon" style="background-color: #4CAF50;">A</div>
+        <span class="author-name">Archana Singh</span>
+        <button class="email-button">&#9993;</button>
+      </div>
+      <div class="author-item">
+        <div class="author-icon" style="background-color: #FFEB3B;">A</div>
+
+        <span class="author-name">Aarushi Chouhan</span>
+        <button class="email-button">&#9993;</button>
+      </div>
+      <div class="author-item">
+        <div class="author-icon" style="background-color: #9C27B0;">J</div>
+        <span class="author-name">Jyoti Bhowmick</span>
+        <button class="email-button">&#9993;</button>
+      </div>
+    </div>
+  </div>
+
+
+  <script>// Add functionality to the back button
+    document.querySelector('.back-button').addEventListener('click', () => {
+      alert('Go back to the previous page!');
+    });
+
+
+    // Add functionality to the submit buttons
+    document.querySelectorAll('.submit-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        alert('Submission successful!');
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const emailButtons = document.querySelectorAll(".email-button");
+
+      emailButtons.forEach((button, index) => {
+        button.addEventListener("click", () => {
+          alert(`Email button clicked for Author ${index + 1}`);
+        });
+      });
+    });
+  </script>
+
+
+
+</body>
+
+</html>

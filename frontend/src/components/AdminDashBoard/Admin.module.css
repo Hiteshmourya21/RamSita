@@ -1,0 +1,98 @@
+.dashboard {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .header {
+    background: #f8f8f8;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .header h1 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  
+  .menuIcon {
+    cursor: pointer;
+  }
+  
+  .tracks {
+    margin-top: 20px;
+  }
+  
+  .track {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px;
+    color: white;
+  }
+  
+  .track img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+  }
+
+  .track a{
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: white;
+  }
+  
+  .track-1 {
+    background: #d81b60;
+  }
+  
+  .track-2 {
+    background: #8bc34a;
+  }
+  
+  .track-3 {
+    background: #3f51b5;
+  }
+  
+  .content {
+    text-align: left;
+  }
+  
+  .content h2 a {
+    text-decoration: none;
+    color: lightblue;
+  }
+  
+  .track h2 {
+    margin: 0;
+  }
+  
+  .footer {
+    display: flex;
+    justify-content: space-around;
+    position: sticky;
+    bottom: 0;
+    background: #f8f8f8;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .footer button {
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    color: #3f51b5;
+    cursor: pointer;
+  }
+  
+  .footer button:hover {
+    text-decoration: underline;
+  }
+  
