@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { authMiddleware } from "../../middleware/auth.middleware.js";
 import Track from "../../model/Track.model.js";
+import { sendTrackAssignmentEmail } from "../../lib/mail.js";
 
 
 const router = express.Router();
@@ -13,16 +14,66 @@ router.get("/dashboard", authMiddleware(["admin"]), (req, res) => {
   });
 
 
-  router.post(("/track/save"), (req, res) => {
-    const { title, trackNo, description, date, time, sessionChair, supervisor, rapparteur, venue, facultyCoordinator } = req.body;
-    // console.log(req.body); 
-    if(!title || !trackNo || !description || !date || !time || !sessionChair || !supervisor || !rapparteur || !venue || !facultyCoordinator) {
-      return res.status(400).json({ message: "Please fill all the fields" });
-    }
-    const newTrack = new Track({ title, trackNo, description, date, time, sessionChair, supervisor, rapparteur, venue, facultyCoordinator });
-    newTrack.save();
-    res.status(201).json({ message: "Track saved successfully" });
-  });
+  router.post("/track/save", async (req, res) => {
+      const {
+        title,
+        trackNo,
+        description,
+        date,
+        time,
+        sessionChair,
+        supervisor,
+        rapparteur,
+        venue,
+        facultyCoordinator,
+      } = req.body;
+  
+      if (
+        !title ||!trackNo ||!description ||!date ||!time ||!sessionChair ||!supervisor ||!rapparteur ||!venue ||!facultyCoordinator) 
+        {
+        return res.status(400).json({ message: "Please fill all the fields" });
+      }
+  
+      // Check for duplicate track number
+      try {
+        const updatedTrack = await Track.findOneAndUpdate(
+          { trackNo }, // Find the track by trackNo
+          {
+            title,
+            description,
+            date,
+            time,
+            sessionChair,
+            supervisor,
+            rapparteur,
+            venue,
+            facultyCoordinator,
+          },
+          { new: true, upsert: true } // Update if found, insert if not
+        );
+  
+        const sessionChairEmail = "hiteshmourya2024@gmail.com";
+        if (updatedTrack) {
+          try {
+            // Call the function to send the email
+            await sendTrackAssignmentEmail(sessionChairEmail, req.body);
+            return res.status(200).json({
+              message: "Track assigned and email sent successfully!",
+              track: updatedTrack,
+            });
+          } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Error sending email." });
+          }
+        } else {
+          return res.status(500).json({ message: "Unable to save the track" });
+        }
+      } catch (error) {
+        console.error("Error updating or saving track:", error);
+        return res.status(500).json({ message: "Server error occurred" });
+      }
+    });
+
 
   router.get("/track/getInfo", async (req, res) => {
     const { title } = req.query; // Access the title from query parameters

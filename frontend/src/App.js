@@ -2,6 +2,7 @@
 import styles from './App.module.css';
 import Admin from './components/AdminDashBoard/Admin';
 import VenueDetail from './components/AdminDashBoard/VenueDetail';
+import AddAuthor from './components/Author/AddAuthor';
 import LoginForm from './components/frontpage/LoginForm';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
@@ -12,7 +13,8 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={< LoginForm />} />
-          <Route path="/TrackDetail" element={<VenueDetail />} />
+          <Route path="/admin/TrackDetail" element={<VenueDetail />} />
+          <Route path="/admin/addAuthor" element={<AddAuthor />} />
           <Route path="/admin/dashboard" element={< Admin />} />
         </Routes>
       </Router>

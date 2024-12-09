@@ -1,27 +1,46 @@
 import React, { useEffect } from "react";
 import "./VenueDetail.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const VenueDetail = () => {
-  const [track, setTrack] = React.useState([]);
   const location = useLocation();
   const state = location.state;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      // console.log(state.title)
-      const response = await axios.get("http://localhost:5000/api/v1/admin/track/getInfo", { params: { title: state.title } });
-      if(!response.data) {
-        setTrack({});
-      }
-      else{
-        console.log(response.data);
-        setTrack(response.data);
+      try {
+        const trackResponse = await axios.get(
+          "http://localhost:5000/api/v1/admin/track/getInfo",
+          { params: { title: state.title } }
+        );
+
+        if (trackResponse.data) {
+          const { venue, date, time, sessionChair, supervisor, rapparteur, facultyCoordinator } =
+            trackResponse.data;
+          setVenue(venue);
+          setDate(new Date(date).toISOString().split("T")[0]);
+          setTime(time);
+          setSessionChair(sessionChair);
+          setSupervisor(supervisor);
+          setRapparteur(rapparteur);
+          setFacultyCoordinator(facultyCoordinator);
+
+          const authorsResponse = await axios.get(
+            "http://localhost:5000/api/v1/author/getAllAuthor",
+            { params: { id: trackResponse.data._id } }
+          );
+          console.log(authorsResponse.data);
+          setAuthorsData(authorsResponse.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     };
+
     fetchData();
-  }, []);
+  }, [state.title]);
 
 
 
@@ -32,6 +51,7 @@ const VenueDetail = () => {
   const [supervisor, setSupervisor] = React.useState("");
   const [facultyCoordinator, setFacultyCoordinator] = React.useState("");
   const [rapparteur, setRapparteur] = React.useState("");
+  const [authorsData, setAuthorsData] = React.useState([]);
   
 
 
@@ -41,6 +61,21 @@ const VenueDetail = () => {
 
   const handleSubmitClick = async(e) => {
     e.preventDefault();
+    if (
+      !state.title ||
+      !state.id ||
+      !state.description ||
+      !date ||
+      !time ||
+      !sessionChair ||
+      !supervisor ||
+      !rapparteur ||
+      !venue ||
+      !facultyCoordinator
+    ) {
+      alert("Please fill all the fields!");
+      return;
+    }
     const data = {
       title : state.title,
       trackNo : state.id.toString(),
@@ -54,12 +89,12 @@ const VenueDetail = () => {
       facultyCoordinator 
     }
     try {
+      console.log(data);
       const response = await axios.post("http://localhost:5000/api/v1/admin/track/save", data);
       console.log(response.data);
     } catch (error) {
       console.log(error);
     }
-    console.log(data);
   };
 
   const handleEmailClick = (authorIndex) => {
@@ -82,7 +117,7 @@ const VenueDetail = () => {
           <tr>
             <th>
               Venue :-
-              <select value={track.venue ? track.venue : venue } id="VenueRoom" onChange={(e) => setVenue(e.target.value)}>
+              <select value={venue} id="VenueRoom" onChange={(e) => setVenue(e.target.value)}>
                 <option value=""></option>
                 <option value="L341">L341 3rd block 3</option>
                 <option value="L342">L342 3rd block 3</option>
@@ -93,13 +128,13 @@ const VenueDetail = () => {
             <td>
               <th>
                 Date:-
-                <input id="appointment-time" type="date" name="appointment-time" value={track.data ? new Date( track.data) : date} onChange={(e) => setDate(e.target.value)}/>
+                <input id="appointment-time" type="date" name="appointment-time" value={date} onChange={(e) => setDate(e.target.value)}/>
               </th>
             </td>
             <td>
               <th>
                 Time:-
-                <input id="appointment-time" type="time" name="appointment-time" value={track.time ? track.time : time} onChange={(e) => setTime(e.target.value)}/>
+                <input id="appointment-time" type="time" name="appointment-time" value={time} onChange={(e) => setTime(e.target.value)}/>
               </th>
             </td>
           </tr>
@@ -113,7 +148,7 @@ const VenueDetail = () => {
           <tr>
                 <td>Supervisors</td>
                 <td>
-                  <select value={track.supervisor ? track.supervisor : supervisor} id="supervisor" onChange={(e) => setSupervisor(e.target.value)}>
+                  <select value={ supervisor} id="supervisor" onChange={(e) => setSupervisor(e.target.value)}>
                   <option value=""></option>
                     <option value="Dr. Vandana Kate">Dr. Vandana Kate</option>
                     <option value="Prof. Chanchal Bansal">Prof. Chanchal Bansal</option>
@@ -125,7 +160,7 @@ const VenueDetail = () => {
           <tr>
                 <td>Session Chair</td>
                 <td>
-                  <select value={track.sessionChair ? track.sessionChair : sessionChair} id="sessionChair" onChange={(e) => setSessionChair(e.target.value)}>
+                  <select value={sessionChair} id="sessionChair" onChange={(e) => setSessionChair(e.target.value)}>
                   <option value=""></option>
                   <option value="Dr. Vandana Kate">Dr. Vandana Kate</option>
                 <option value="Prof. Chanchal Bansal">Prof. Chanchal Bansal</option>
@@ -137,7 +172,7 @@ const VenueDetail = () => {
           <tr>
                 <td>Rapporteur</td>
                 <td>
-                  <select value={track.rapparteur ? track.rapparteur : rapparteur} id="rapparteur" onChange={(e) => setRapparteur(e.target.value)}>
+                  <select value={ rapparteur} id="rapparteur" onChange={(e) => setRapparteur(e.target.value)}>
                   <option value=""></option>
                   <option value="Dr. Vandana Kate">Dr. Vandana Kate</option>
                 <option value="Prof. Chanchal Bansal">Prof. Chanchal Bansal</option>
@@ -149,7 +184,7 @@ const VenueDetail = () => {
           <tr>
                 <td>Faculty Coordinator</td>
                 <td>
-                  <select value={track.facultyCoordinator ? track.facultyCoordinator : facultyCoordinator} id="facultyCoordinator" onChange={(e) => setFacultyCoordinator(e.target.value)}>
+                  <select value={facultyCoordinator} id="facultyCoordinator" onChange={(e) => setFacultyCoordinator(e.target.value)}>
                   <option value=""></option>
                   <option value="Dr. Vandana Kate">Dr. Vandana Kate</option>
                 <option value="Prof. Chanchal Bansal">Prof. Chanchal Bansal</option>
@@ -165,11 +200,6 @@ const VenueDetail = () => {
       {/* Container for Presentation Paper */}
       <div className="container">
         <header>
-          <button className="back-button" onClick={handleBackButtonClick}>
-            <a href="http://127.0.0.1:5500/Admin.html">
-              <strong>←</strong>
-            </a>
-          </button>
           <h1>
             RAMSITA - 2025
             <br />
@@ -184,67 +214,100 @@ const VenueDetail = () => {
               <th>Author Name</th>
               <th>Present</th>
               <th>Marks</th>
-              <th>Submit</th>
+              <th>Status</th>
+              <th>Presenter</th>
             </tr>
           </thead>
           <tbody>
-            {/* Example Paper Data */}
-            {[
-              {
-                id: 219,
-                title: "Carbon Compass: Real-Time Tracking And Solutions For a Sustainable Future",
-                authors: ["Aarushi Chouhan", "Akshat Tiwari", "Arun Patidar", "Chirag Tiwari"],
-                status: "Submit",
-              },
-              {
-                id: 228,
-                title:
-                  "Empowering Connections: A Matrimonial Solution For The Down Syndrome Community",
-                authors: [
-                  "Archana Singh",
-                  "Ayana Lala",
-                  "Bhumika Tekam",
-                  "Jyoti Bhowmick",
-                  "Dr. Shilpa Bhalerao",
-                  "Prof. Vandana Kate",
-                ],
-                status: "Pending",
-              },
-            ].map((paper, index) => (
-              <React.Fragment key={index}>
-                <tr>
-                  <td rowSpan={paper.authors.length}>{paper.id}</td>
-                  <td rowSpan={paper.authors.length}>{paper.title}</td>
-                  <td>{paper.authors[0]}</td>
-                  <td rowSpan={paper.authors.length}></td>
-                  <td rowSpan={paper.authors.length}></td>
-                  <td rowSpan={paper.authors.length}>
-                    <button
-                      className="submit-btn"
-                      style={{
-                        backgroundColor: paper.status === "Pending" ? "red" : "#4CAF50",
+          {authorsData.map((author, index) => (
+            <React.Fragment key={index}>
+              <tr>
+                <td rowSpan={author.members.length}>{author.pid}</td>
+                <td rowSpan={author.members.length}>{author.title}</td>
+                <td>{author.members[0].name}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={author.members[0].attendance}
+                    onChange={(e) => {
+                      const updatedAttendance = [...authorsData];
+                      updatedAttendance[index].members[0].attendance = e.target.checked;
+                      // console.log(updatedAttendance);
+                      setAuthorsData(updatedAttendance);
+                    }}
+                  />
+                </td>
+                <td rowSpan={author.members.length}>
+                  <input
+                    type="number"
+                    value={author.marks}
+                    onChange={(e) => {
+                      const updatedMarks = [...authorsData];
+                      updatedMarks[index].marks = e.target.value;
+                      // console.log(updatedMarks);
+                      setAuthorsData(updatedMarks);
+                    }}
+                  />
+                </td>
+                <td rowSpan={author.members.length}>
+                  <button
+                    className="submit-btn"
+                    style={{
+                      backgroundColor: author.status === "pending" ? "red" : "#4CAF50",
+                    }}
+                  >
+                    {author.status}
+                  </button>
+                </td>
+                <td rowSpan={author.members.length}>
+                  <select
+                    onChange={(e) => {
+                      const updatedAuthors = [...authorsData];
+                      updatedAuthors[index].presenter = e.target.value;
+                      setAuthorsData(updatedAuthors);
+                    }}
+                    value={author.presenter || ""}
+                  >
+                    <option value="" disabled>
+                      Select Presenter
+                    </option>
+                    {author.members.map((member) => (
+                      <option key={member.name} value={member.name}>
+                        {member.name}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+              </tr>
+              {author.members.slice(1).map((member, idx) => (
+                <tr key={idx}>
+                  <td>{member.name}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={member.attendance}
+                      onChange={(e) => {
+                        const updatedAttendance = [...authorsData];
+                        updatedAttendance[index].members[idx + 1].attendance =
+                          e.target.checked;
+                        setAuthorsData(updatedAttendance);
                       }}
-                    >
-                      {paper.status}
-                    </button>
+                    />
                   </td>
                 </tr>
-                {paper.authors.slice(1).map((author, idx) => (
-                  <tr key={idx}>
-                    <td>{author}</td>
-                  </tr>
-                ))}
-              </React.Fragment>
-            ))}
-          </tbody>
+              ))}
+            </React.Fragment>
+          ))}
+        </tbody>
+
         </table>
-        <button className="add-work add-Paper">
+        <button className="add-work add-Paper" onClick={() => navigate('/admin/addAuthor', { state: state })}>
           <span>+ Add work</span>
         </button>
       </div>
 
       {/* Container for Authors */}
-      <div className="container">
+      {/* <div className="container">
         <header>
           <button className="back-button" onClick={handleBackButtonClick}>
             <a href="http://127.0.0.1:5500/Admin.html">
@@ -275,7 +338,10 @@ const VenueDetail = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
+      <footer className="footer">
+        copyright@CSIT Acropolis
+      </footer>
     </div>
   );
 };

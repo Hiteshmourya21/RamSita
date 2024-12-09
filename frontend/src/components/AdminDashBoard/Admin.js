@@ -43,7 +43,7 @@ const Admin = () => {
             }`}
           >
             <div className={styles.content}>
-              <h3 onClick={() => navigate('/TrackDetail', { state: track })}>{track.title}</h3>
+              <h3 onClick={() => navigate('/admin/TrackDetail', { state: track })}>{track.title}</h3>
               <p>{track.description}</p>
             </div>
             <img src={track.image} alt={track.title} className={styles.image} />
@@ -51,10 +51,7 @@ const Admin = () => {
         ))}
       </div>
       <footer className={styles.footer}>
-        <button>Slot</button>
-        <button>Paper</button>
-        <button>Results</button>
-        <button>Authors</button>
+        copyright@CSIT Acropolis
       </footer>
     </div>
   );

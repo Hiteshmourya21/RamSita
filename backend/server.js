@@ -4,6 +4,7 @@ import cors from "cors"
 
 import authRoutes from "./routes/auth/auth.route.js";
 import adminRoutes from "./routes/admin/admin.route.js";
+import authorRoutes from "./routes/author/author.route.js";
 
 import { connectDB } from "./lib/db.js";
 
@@ -18,6 +19,7 @@ app.use(express.json()); //parse JSON request body
 app.use(cors("http://localhost:3000/"))
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/admin", adminRoutes)
+app.use("/api/v1/author", authorRoutes)
 
 app.listen(PORT,()=>{
     console.log(`Server running on port ${PORT}`)

@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import Admin from "../../model/Admin.model.js";
 import Session from "../../model/Session.model.js";
 import Author from "../../model/Author.model.js";
+import Track from "../../model/Track.model.js";
+import { sendAuthurMail } from "../../lib/mail.js";
 
 const router = express.Router();
 
@@ -50,33 +52,66 @@ router.post("/signup/session", async (req, res) => {
 
 // Author Signup
 router.post("/signup/author", async (req, res) => {
-  const { teamLead, members, paper, track, position, address, affilation, contact, yourRole } = req.body;
-
+  const { email, pid, title, members, trackno } = req.body;
+  // console.log(req.body);
   try {
-    const hashedPassword = await bcrypt.hash(teamLead.password, 10);
-    const author = new Author({
-      teamLead: { ...teamLead, password: hashedPassword },
-      members,
-      paper,
-      track,
-      position,
-      address,
-      affilation,
-      contact,
-      yourRole,
-    });
-    await author.save();
+    const findTrack = await Track.findOne({ trackNo: trackno });
+    if (!findTrack) {
+      res.status(404).json({ message: "Track not found." });
+      }
+    // Generate a password from pid and first letters of each word in the title
+    const titleInitials = title
+      .split(" ")
+      .map((word) => word[0]) // Get the first letter of each word
+      .join("")
+      .toUpperCase(); // Optional: Convert to uppercase for consistency
+    const rawPassword = `${pid}${titleInitials}${Math.floor(Math.random() * 500)+100}`;
 
-    res.status(201).json({ message: "Author registered successfully." });
+    // Hash the generated password
+    const hashedPassword = await bcrypt.hash(rawPassword, 10);
+
+    // Create the author document
+    const author = new Author({
+      title, 
+      email,
+      password: hashedPassword,
+      members: members.map((member) => ({
+        name: member,
+      })),
+      pid,
+      track: findTrack._id,
+    });
+
+    // Save the author to the database
+    await author.save();
+    try {
+      const authorDetail ={
+        title,
+        pid,
+        email,
+        password:rawPassword,
+        track : findTrack,
+      }
+      await sendAuthurMail(email, authorDetail);
+      res.status(201).json({
+        message: "Author registered successfully and mail sent.",
+      });
+      
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error sending email." });
+    }
+    // Send the generated password to the author
   } catch (err) {
+   //Handle duplicate email error
     if (err.code === 11000) {
       res.status(400).json({ message: "Email already exists." });
     } else {
+      console.error(err);
       res.status(500).json({ message: "Error registering author." });
     }
   }
 });
-
 
 // Login
 router.post("/login", async (req, res) => {
@@ -91,8 +126,8 @@ router.post("/login", async (req, res) => {
           user = await Session.findOne({ email });
           break;
         case "author":
-          user = await Author.findOne({ "teamLead.email": email });
-          if (user) user.password = user.teamLead.password; // Match team lead password for authors
+          user = await Author.findOne({ email });
+          if (user) user.password = user.password; // Match team lead password for authors
           break;
         default:
           return res.status(400).json({ message: "Invalid role specified." });
