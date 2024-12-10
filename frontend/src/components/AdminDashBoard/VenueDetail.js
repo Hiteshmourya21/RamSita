@@ -119,10 +119,10 @@ const VenueDetail = () => {
               Venue :-
               <select value={venue} id="VenueRoom" onChange={(e) => setVenue(e.target.value)}>
                 <option value=""></option>
-                <option value="L341">L341 3rd block 3</option>
-                <option value="L342">L342 3rd block 3</option>
-                <option value="L343">L343 3rd block 3</option>
-                <option value="L340">L340 3rd block 3</option>
+                <option value="L341 3rd block 3 floor">L341 3rd block 3</option>
+                <option value="L342 3rd block 3 floor">L342 3rd block 3</option>
+                <option value="L343 3rd block 3 floor">L343 3rd block 3</option>
+                <option value="L340 3rd block 3 floor">L340 3rd block 3</option>
               </select>
             </th>
             <td>
