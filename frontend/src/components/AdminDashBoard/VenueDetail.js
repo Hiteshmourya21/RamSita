@@ -226,16 +226,7 @@ const VenueDetail = () => {
                 <td rowSpan={author.members.length}>{author.title}</td>
                 <td>{author.members[0].name}</td>
                 <td>
-                  <input
-                    type="checkbox"
-                    checked={author.members[0].attendance}
-                    onChange={(e) => {
-                      const updatedAttendance = [...authorsData];
-                      updatedAttendance[index].members[0].attendance = e.target.checked;
-                      // console.log(updatedAttendance);
-                      setAuthorsData(updatedAttendance);
-                    }}
-                  />
+                  {author.members[0].attendance?<span>P</span>:<span>A</span>}
                 </td>
                 <td rowSpan={author.members.length}>
                   <input
@@ -260,39 +251,14 @@ const VenueDetail = () => {
                   </button>
                 </td>
                 <td rowSpan={author.members.length}>
-                  <select
-                    onChange={(e) => {
-                      const updatedAuthors = [...authorsData];
-                      updatedAuthors[index].presenter = e.target.value;
-                      setAuthorsData(updatedAuthors);
-                    }}
-                    value={author.presenter || ""}
-                  >
-                    <option value="" disabled>
-                      Select Presenter
-                    </option>
-                    {author.members.map((member) => (
-                      <option key={member.name} value={member.name}>
-                        {member.name}
-                      </option>
-                    ))}
-                  </select>
+                  {author.presenter}
                 </td>
               </tr>
               {author.members.slice(1).map((member, idx) => (
                 <tr key={idx}>
                   <td>{member.name}</td>
                   <td>
-                    <input
-                      type="checkbox"
-                      checked={member.attendance}
-                      onChange={(e) => {
-                        const updatedAttendance = [...authorsData];
-                        updatedAttendance[index].members[idx + 1].attendance =
-                          e.target.checked;
-                        setAuthorsData(updatedAttendance);
-                      }}
-                    />
+                  {member.attendance?<span>P</span>:<span>A</span>}
                   </td>
                 </tr>
               ))}

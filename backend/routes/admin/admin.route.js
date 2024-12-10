@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import { authMiddleware } from "../../middleware/auth.middleware.js";
 import Track from "../../model/Track.model.js";
 import { sendTrackAssignmentEmail } from "../../lib/mail.js";
+import EmailData from "../../model/EmailData.model.js";
+import Session from "../../model/Session.model.js";
 
 
 const router = express.Router();
@@ -51,20 +53,35 @@ router.get("/dashboard", authMiddleware(["admin"]), (req, res) => {
           },
           { new: true, upsert: true } // Update if found, insert if not
         );
-  
-        const sessionChairEmail = "hiteshmourya2024@gmail.com";
+       
         if (updatedTrack) {
           try {
+            const faculty = await EmailData.findOne({ name: sessionChair });
+            const sessionChairEmail = faculty.email;
+        
             // Call the function to send the email
+            req.body["password"] = 123;
             await sendTrackAssignmentEmail(sessionChairEmail, req.body);
-            return res.status(200).json({
-              message: "Track assigned and email sent successfully!",
-              track: updatedTrack,
+        
+            const password = String(req.body.password); // Ensure the password is a string
+            const hashedPassword = await bcrypt.hash(password, 10);
+        
+            const newSessionChair = new Session({
+                email:sessionChairEmail,
+                password: hashedPassword,
+                track: updatedTrack._id,
             });
-          } catch (error) {
+        
+            await newSessionChair.save();
+        
+            return res.status(200).json({
+                message: "Track assigned and email sent successfully!",
+                track: updatedTrack,
+            });
+        } catch (error) {
             console.error(error);
             res.status(500).json({ message: "Error sending email." });
-          }
+        }                
         } else {
           return res.status(500).json({ message: "Unable to save the track" });
         }

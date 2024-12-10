@@ -5,6 +5,7 @@ import VenueDetail from './components/AdminDashBoard/VenueDetail';
 import AddAuthor from './components/Author/AddAuthor';
 import LoginForm from './components/frontpage/LoginForm';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import SessionDashboard from './components/SessionChair/SessionDashboard';
 
 const App = () => {
 
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/admin/TrackDetail" element={<VenueDetail />} />
           <Route path="/admin/addAuthor" element={<AddAuthor />} />
           <Route path="/admin/dashboard" element={< Admin />} />
+          <Route path="/session/dashboard" element={< SessionDashboard />} />
         </Routes>
       </Router>
     </div>

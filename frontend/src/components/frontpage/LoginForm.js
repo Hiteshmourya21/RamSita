@@ -30,7 +30,7 @@ const LoginForm = () => {
           navigate('/admin/dashboard');
         }
         else if(role === 'sessionChair'){
-        navigate('/admin/dashboard');
+        navigate('/session/dashboard',{ state: email });
         }
         else if(role === 'author'){
           navigate('/admin/dashboard');

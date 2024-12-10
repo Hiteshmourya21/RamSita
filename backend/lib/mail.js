@@ -26,7 +26,7 @@ Track Description ${trackDetails.description}
 Assigned Date: ${new Date(trackDetails.date).toLocaleDateString()}
 Time: ${trackDetails.time}
 Venue: ${trackDetails.venue}
-
+Password: ${trackDetails.password}
 
 Please make sure to attend the session on the specified date and time.
 
