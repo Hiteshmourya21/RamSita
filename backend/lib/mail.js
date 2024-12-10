@@ -110,3 +110,49 @@ Conference Management Team
       throw error;
     }
   };
+
+  export const sendTrackCancelationEmail = async (sessionChairEmail,trackDetails) => {
+    try {
+      // Configure your email transport
+      const transporter = nodemailer.createTransport({
+        service: "gmail", // Use your email provider (e.g., Gmail)
+        auth: {
+          user: process.env.EMAIL_USER, // Your email address
+          pass: process.env.EMAIL_PASS, // Your email password or app-specific password
+        },
+      });
+  
+      // Construct the email
+      const mailOptions = {
+        from: process.env.EMAIL_USER, // Sender email
+        to: sessionChairEmail, // Recipient email
+        subject: "Track Cancelation Notification",
+        text: `Dear Session Chair,
+  
+  Pardon!! 
+  This is to inform you that your track has been rescheduled to another incharge.
+  Your previous track details are:
+  
+  Track Number: ${trackDetails.trackNo}
+  Track Title: ${trackDetails.title}
+  Track Description ${trackDetails.description}
+  Assigned Date: ${new Date(trackDetails.date).toLocaleDateString()}
+  Time: ${trackDetails.time}
+  Venue: ${trackDetails.venue}
+  
+  Please wait until further notice or any updates.
+  
+  
+  Best regards,
+  Conference Management Team
+        `,
+      };
+  
+      // Send the email
+      await transporter.sendMail(mailOptions);
+      console.log("Track assignment email sent successfully!");
+    } catch (error) {
+      console.error("Error sending email:", error);
+      throw error;
+    }
+  };
