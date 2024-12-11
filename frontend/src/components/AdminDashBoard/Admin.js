@@ -61,6 +61,9 @@ const Admin = () => {
           </div>
         ))}
       </div>
+      <button  onClick={() => navigate('/admin/addFaculty')}>
+          <span>+ Add Faculty</span>
+        </button>
       <footer className={styles.footer}>
         copyright@CSIT Acropolis
       </footer>

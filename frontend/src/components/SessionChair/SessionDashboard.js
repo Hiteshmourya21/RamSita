@@ -25,7 +25,7 @@ const SessionDashboard = () => {
     const fetchUser = async () => {
         try {
             const trackResponse = await axios.get(
-              "http://localhost:5000/api/v1/session/getDetail",
+              `${process.env.REACT_APP_BASE_URL}/session/getDetail`,
               { params: { email: state } }
             );
             // console.log(trackResponse.data);
@@ -33,7 +33,7 @@ const SessionDashboard = () => {
               setTrack(trackResponse.data);
     
               const authorsResponse = await axios.get(
-                "http://localhost:5000/api/v1/author/getAllAuthor",
+                `${process.env.REACT_APP_BASE_URL}/author/getAllAuthor`,
                 { params: { id: trackResponse.data._id } }
               );
               console.log(authorsResponse.data);
@@ -51,7 +51,7 @@ const SessionDashboard = () => {
 
   const handleSubmitEvent = async() => {
     try {
-        const response = await axios.put("http://localhost:5000/api/v1/session/authors/bulk-update", authorsData);
+        const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/session/authors/bulk-update`, authorsData);
         console.log(response.data);
       } catch (error) {
         console.log(error);

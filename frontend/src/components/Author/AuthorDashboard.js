@@ -1,10 +1,67 @@
-<div
+import axios from "axios";
+import {  useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
+const AuthorDashboard = () => {
+  const location = useLocation();
+  const state = location.state;
+  const [showAuthorDetails, setShowAuthorDetails] = useState(false);
+  const [track, setTrack] = React.useState({
+    "title": "",
+    "description": "",
+    "date": "",
+    "time": "",
+    "supervisor": "",
+    "rapparteur": "",
+    "venue": "",
+    "facultyCoordinator": ""
+});
+  const [authorsData, setAuthorsData] = React.useState([]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+        try {
+            const trackResponse = await axios.get(
+              `${process.env.REACT_APP_BASE_URL}/author/getDetail`,
+              { params: { email: state } }
+            );
+            // console.log(trackResponse.data);
+            if (trackResponse.data) {
+              setTrack(trackResponse.data);
+    
+              const authorsResponse = await axios.get(
+                `${process.env.REACT_APP_BASE_URL}/author/getAllAuthor`,
+                { params: { id: trackResponse.data._id } }
+              );
+              console.log(authorsResponse.data);
+              setAuthorsData(authorsResponse.data);
+            }
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+    };
+    fetchUser();
+    }, []);
+  
+
+  if(authorsData.length === 0){
+    return <div>Loading...</div>;
+  }
+  const toggleAuthorDetails = () => {
+    setShowAuthorDetails(!showAuthorDetails);
+  };
+
+  return (
+    <div
       style={{
         fontFamily: "Arial, sans-serif",
         backgroundColor: "#f4f4f4",
         minHeight: "100vh",
         padding: "20px",
         boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>{track.title}</h1>
@@ -16,6 +73,7 @@
           textAlign: "left",
           backgroundColor: "white",
           borderRadius: "8px",
+          maxWidth: "800px",
           overflow: "hidden",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         }}
@@ -33,7 +91,7 @@
                 textAlign: "center",
               }}
             >
-              Venue Details
+              {track.description}
             </th>
           </tr>
         </thead>
@@ -137,6 +195,77 @@
         </tbody>
       </table>
 
+      <table
+      style={{
+        width: "100%",
+        borderCollapse: "collapse",
+        marginTop: "20px",
+        marginBottom: "75px",
+        textAlign: "left",
+        backgroundColor: "white",
+        maxWidth: "800px",
+        borderRadius: "8px",
+        overflow: "hidden",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+      <thead>
+        <tr style={{ backgroundColor: "#9c27b0", color: "white" }}>
+          <th style={{ padding: "10px" }}>Paper ID</th>
+          <th style={{ padding: "10px" }}>Paper Title</th>
+          <th style={{ padding: "10px" }}>Author Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {authorsData.map((author, index) => (
+          <React.Fragment key={index}>
+            <tr>
+              <td
+                rowSpan={author.members.length}
+                style={{
+                  padding: "10px",
+                  borderBottom: "1px solid #e0e0e0",
+                }}
+              >
+                {author.pid}
+              </td>
+              <td
+                rowSpan={author.members.length}
+                style={{
+                  padding: "10px",
+                  borderBottom: "1px solid #e0e0e0",
+                }}
+              >
+                {author.title}
+              </td>
+              <td
+                style={{
+                  padding: "10px",
+                  borderBottom: "1px solid #e0e0e0",
+                }}
+              >
+                {author.members[0].name}
+              </td>
+            
+            </tr>
+            {author.members.slice(1).map((member, idx) => (
+              <tr key={idx}>
+                <td
+                  style={{
+                    padding: "10px",
+                    borderBottom: "1px solid #e0e0e0",
+                  }}
+                >
+                  {member.name}
+                </td>
+                  </tr>
+                ))}
+              </React.Fragment>
+        ))}
+      </tbody>
+    </table>
+
+
       <footer
         style={{
           position: "fixed",
@@ -164,3 +293,7 @@
         </button>
       </footer>
     </div>
+  );
+};
+
+export default AuthorDashboard;

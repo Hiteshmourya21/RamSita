@@ -13,17 +13,31 @@ const SECRET_KEY = process.env.SECRET_KEY || "your_secret_key";
 //     res.json({ message: "Welcome to Admin Dashboard" });
 //   });
 
+router.get('/getDetail', async (req, res) => {
+  const { email } = req.query; // Extract email from query parameters
 
-//   router.post(("/track/save"), (req, res) => {
-//     const { title, trackNo, description, date, time, sessionChair, supervisor, rapparteur, venue, facultyCoordinator } = req.body;
-//     // console.log(req.body); 
-//     if(!title || !trackNo || !description || !date || !time || !sessionChair || !supervisor || !rapparteur || !venue || !facultyCoordinator) {
-//       return res.status(400).json({ message: "Please fill all the fields" });
-//     }
-//     const newTrack = new Track({ title, trackNo, description, date, time, sessionChair, supervisor, rapparteur, venue, facultyCoordinator });
-//     newTrack.save();
-//     res.status(201).json({ message: "Track saved successfully" });
-//   });
+  try {
+    // Fetch the session chair based on the email
+    const author = await Author.findOne({ email }); // Use `await` here
+
+    if (!author) {
+      return res.status(404).json({ message: 'Author not found' });
+    }
+
+    // Fetch the associated track
+    const authorTrack = await Track.findOne({ _id: author.track }); // Assuming `track` is the correct field
+
+    if (!authorTrack) {
+      return res.status(404).json({ message: 'Track not found' });
+    }
+
+    // Send the track details as the response
+    res.json(authorTrack);
+  } catch (error) {
+    console.error('Error fetching session or track:', error);
+    res.status(500).json({ message: 'Error fetching session or track' });
+  }
+});
 
   router.get("/getAllAuthor", async (req, res) => {
     const { id } = req.query; 

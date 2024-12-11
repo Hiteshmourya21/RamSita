@@ -2,16 +2,11 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const AddAuthor = () => {
+const AddFaculty = () => {
   const [formData, setFormData] = useState({
-    paperId: "",
-    title: "",
+    name: "",
     email: "",
-    authors: [""],
-    // trackNumber: "",
   });
-  const location = useLocation();
-  const state = location.state;
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -22,35 +17,15 @@ const AddAuthor = () => {
     }));
   };
 
-  const handleAuthorChange = (index, value) => {
-    const updatedAuthors = [...formData.authors];
-    updatedAuthors[index] = value;
-    setFormData((prevData) => ({
-      ...prevData,
-      authors: updatedAuthors,
-    }));
-  };
-
-  const addAuthorField = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      authors: [...prevData.authors, ""],
-    }));
-  };
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    const { paperId, title, email, authors } = formData;
-    alert(
-      `Paper ID: ${paperId}\nTitle: ${title}\nEmail: ${email}\nAuthors: ${authors.join(
-        ", "
-      )}\nTrack Number: ${state.id}`
-    );
+    const { name, email } = formData;
     try{
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/signup/author`,{pid:paperId,title,email,members:authors,trackno:state.id});
+      const response = await axios.post('http://localhost:5000/register/faculty',formData);
       console.log(response.data);
-      setFormData({ paperId: "", title: "", email: "", authors: [""] });
-      navigate('/admin/TrackDetail',{ state: state });
+      setFormData({ name: "", email: ""});
+    //   navigate('/admin/TrackDetail',{ state: state });
     }
     catch(error){
       if(error.response.status === 400){
@@ -71,28 +46,15 @@ const AddAuthor = () => {
         RAMSITA CONFERENCE</div>
       <div style={styles.formContainer}>
         <form onSubmit={handleSubmit}>
-          <div style={styles.formGroup}>
-            <label htmlFor="paperId">Paper ID:</label>
-            <input
-              type="number"
-              id="paperId"
-              name="paperId"
-              placeholder="Enter Paper ID"
-              value={formData.paperId}
-              onChange={handleInputChange}
-              required
-              style={styles.input}
-            />
-          </div>
 
           <div style={styles.formGroup}>
-            <label htmlFor="title">Title:</label>
+            <label htmlFor="title">Name:</label>
             <input
               type="text"
-              id="title"
-              name="title"
-              placeholder="Enter Title"
-              value={formData.title}
+              id="name"
+              name="name"
+              placeholder="Enter Name"
+              value={formData.name}
               onChange={handleInputChange}
               required
               style={styles.input}
@@ -112,51 +74,6 @@ const AddAuthor = () => {
               style={styles.input}
             />
           </div>
-
-          <div style={styles.formGroup}>
-            <label>Author(s):</label>
-            {formData.authors.map((author, index) => (
-              <div key={index} style={{ display: "flex", alignItems: "center" }}>
-                <input
-                  type="text"
-                  name={`author-${index}`}
-                  placeholder="Enter Author Name"
-                  value={author}
-                  onChange={(e) => handleAuthorChange(index, e.target.value)}
-                  required
-                  style={{ ...styles.input, flex: 1 }}
-                />
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={addAuthorField}
-              style={styles.addAuthorButton}
-            >
-              + Add Author
-            </button>
-          </div>
-
-          {/* <div style={styles.formGroup}>
-            <label htmlFor="trackNumber">Track Number:</label>
-            <select
-              id="trackNumber"
-              name="trackNumber"
-              value={formData.trackNumber}
-              onChange={handleInputChange}
-              required
-              style={styles.input}
-            >
-              <option value="" disabled>
-                Select Track Number
-              </option>
-              {Array.from({ length: 13 }, (_, i) => i + 1).map((number) => (
-                <option key={number} value={number}>
-                  {number}
-                </option>
-              ))}
-            </select>
-          </div> */}
 
           <button type="submit" style={styles.submitButton}>
             Submit
@@ -243,4 +160,4 @@ const styles = {
   
 };
 
-export default AddAuthor;
+export default AddFaculty;

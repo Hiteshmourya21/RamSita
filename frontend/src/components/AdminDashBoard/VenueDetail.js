@@ -12,13 +12,13 @@ const VenueDetail = () => {
     const fetchData = async () => {
       try {
         const trackResponse = await axios.get(
-          "http://localhost:5000/api/v1/admin/track/getInfo",
+          `${process.env.REACT_APP_BASE_URL}/admin/track/getInfo`,
           { params: { title: state.title } }
         );
-
-        if (trackResponse.data) {
+        console.log(trackResponse.data)
+        if (trackResponse.data.track) {
           const { venue, date, time, sessionChair, supervisor, rapparteur, facultyCoordinator } =
-            trackResponse.data;
+            trackResponse.data.track;
           setVenue(venue);
           setDate(new Date(date).toISOString().split("T")[0]);
           setTime(time);
@@ -26,10 +26,11 @@ const VenueDetail = () => {
           setSupervisor(supervisor);
           setRapparteur(rapparteur);
           setFacultyCoordinator(facultyCoordinator);
+          setFacultyData(trackResponse.data.faculty);
 
           const authorsResponse = await axios.get(
-            "http://localhost:5000/api/v1/author/getAllAuthor",
-            { params: { id: trackResponse.data._id } }
+            `${process.env.REACT_APP_BASE_URL}/author/getAllAuthor`,
+            { params: { id: trackResponse.data.track._id } }
           );
           console.log(authorsResponse.data);
           setAuthorsData(authorsResponse.data);
@@ -52,6 +53,7 @@ const VenueDetail = () => {
   const [facultyCoordinator, setFacultyCoordinator] = React.useState("");
   const [rapparteur, setRapparteur] = React.useState("");
   const [authorsData, setAuthorsData] = React.useState([]);
+  const [facultyData, setFacultyData] = React.useState([]);
   
 
 
@@ -90,7 +92,7 @@ const VenueDetail = () => {
     }
     try {
       console.log(data);
-      const response = await axios.post("http://localhost:5000/api/v1/admin/track/save", data);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/admin/track/save`, data);
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -149,11 +151,12 @@ const VenueDetail = () => {
                 <td>Supervisors</td>
                 <td>
                   <select value={ supervisor} id="supervisor" onChange={(e) => setSupervisor(e.target.value)}>
-                  <option value=""></option>
-                    <option value="Dr. Vandana Kate">Dr. Vandana Kate</option>
-                    <option value="Prof. Chanchal Bansal">Prof. Chanchal Bansal</option>
-                    <option value="Prof. Manoj Kumar Gupta">Prof. Manoj Kumar Gupta</option>
-                    <option value="Prof. Aashish Anjana">Prof. Aashish Anjana</option>
+                  <option value="">Select Faculty</option>
+                  {facultyData.map(faculty => (
+                    <option key={faculty._id} value={faculty.name}>
+                      {faculty.name}
+                    </option>
+                     ))}
                   </select>
                 </td>
               </tr>
@@ -161,11 +164,12 @@ const VenueDetail = () => {
                 <td>Session Chair</td>
                 <td>
                   <select value={sessionChair} id="sessionChair" onChange={(e) => setSessionChair(e.target.value)}>
-                  <option value=""></option>
-                  <option value="Dr. Vandana Kate">Dr. Vandana Kate</option>
-                <option value="Prof. Chanchal Bansal">Prof. Chanchal Bansal</option>
-                <option value="Prof. Manoj Kumar Gupta">Prof. Manoj Kumar Gupta</option>
-              <option value="Prof. Aashish Anjana">Prof. Aashish Anjana</option>
+                  <option value="">Select Faculty</option>
+                  {facultyData.map(faculty => (
+                    <option key={faculty._id} value={faculty.name}>
+                      {faculty.name}
+                    </option>
+                     ))}
                   </select>
                 </td>
               </tr>
@@ -173,11 +177,12 @@ const VenueDetail = () => {
                 <td>Rapporteur</td>
                 <td>
                   <select value={ rapparteur} id="rapparteur" onChange={(e) => setRapparteur(e.target.value)}>
-                  <option value=""></option>
-                  <option value="Dr. Vandana Kate">Dr. Vandana Kate</option>
-                <option value="Prof. Chanchal Bansal">Prof. Chanchal Bansal</option>
-                <option value="Prof. Manoj Kumar Gupta">Prof. Manoj Kumar Gupta</option>
-              <option value="Prof. Aashish Anjana">Prof. Aashish Anjana</option>
+                  <option value="">Select Faculty</option>
+                  {facultyData.map(faculty => (
+                    <option key={faculty._id} value={faculty.name}>
+                      {faculty.name}
+                    </option>
+                     ))}
                   </select>
                 </td>
               </tr>
@@ -185,11 +190,12 @@ const VenueDetail = () => {
                 <td>Faculty Coordinator</td>
                 <td>
                   <select value={facultyCoordinator} id="facultyCoordinator" onChange={(e) => setFacultyCoordinator(e.target.value)}>
-                  <option value=""></option>
-                  <option value="Dr. Vandana Kate">Dr. Vandana Kate</option>
-                <option value="Prof. Chanchal Bansal">Prof. Chanchal Bansal</option>
-                <option value="Prof. Manoj Kumar Gupta">Prof. Manoj Kumar Gupta</option>
-              <option value="Prof. Aashish Anjana">Prof. Aashish Anjana</option>
+                  <option value="">Select Faculty</option>
+                  {facultyData.map(faculty => (
+                    <option key={faculty._id} value={faculty.name}>
+                      {faculty.name}
+                    </option>
+                     ))}
                   </select>
                 </td>
               </tr>
@@ -272,39 +278,6 @@ const VenueDetail = () => {
         </button>
       </div>
 
-      {/* Container for Authors */}
-      {/* <div className="container">
-        <header>
-          <button className="back-button" onClick={handleBackButtonClick}>
-            <a href="http://127.0.0.1:5500/Admin.html">
-              <strong>←</strong>
-            </a>
-          </button>
-        </header>
-        <h1 className="title">Authors</h1>
-        <div className="author-list">
-          {[
-            { name: "Arun Patidar", color: "#FF5722" },
-            { name: "Akshat Tiwari", color: "#2196F3" },
-            { name: "Archana Singh", color: "#4CAF50" },
-            { name: "Aarushi Chouhan", color: "#FFEB3B" },
-            { name: "Jyoti Bhowmick", color: "#9C27B0" },
-          ].map((author, index) => (
-            <div className="author-item" key={index}>
-              <div className="author-icon" style={{ backgroundColor: author.color }}>
-                {author.name[0]}
-              </div>
-              <span className="author-name">{author.name}</span>
-              <button
-                className="email-button"
-                onClick={() => handleEmailClick(index)}
-              >
-                &#9993;
-              </button>
-            </div>
-          ))}
-        </div>
-      </div> */}
       <footer className="footer">
         copyright@CSIT Acropolis
       </footer>

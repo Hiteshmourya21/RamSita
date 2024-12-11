@@ -14,6 +14,7 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
     if(selectedRole){
       if (!email || !password) {
@@ -22,7 +23,7 @@ const LoginForm = () => {
       else{
       try{
         const role = selectedRole;
-        const response = await axios.post('http://localhost:5000/api/v1/auth/login', { email, password, role });
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/login`, { email, password, role });
         console.log('Login response:', response.data);
         localStorage.setItem('token', response.data.token);
         // Handle the response from the server
@@ -33,7 +34,7 @@ const LoginForm = () => {
         navigate('/session/dashboard',{ state: email });
         }
         else if(role === 'author'){
-          navigate('/admin/dashboard');
+          navigate('/author/dashboard',{ state: email });
         }
       } catch (error) {
         console.log('Login error:', error.response.data);
