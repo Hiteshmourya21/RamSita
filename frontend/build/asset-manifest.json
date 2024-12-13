@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5e20ae9e.css",
+    "main.js": "/static/js/main.82927529.js",
+    "static/media/Track 6.png": "/static/media/Track 6.a3eda9a13d38df4bfa14.png",
+    "static/media/Track 13.jpg": "/static/media/Track 13.6cbcfb0b8cef1226fbf4.jpg",
+    "static/media/Track 12.jpg": "/static/media/Track 12.1160b2e964c1272f7e34.jpg",
+    "static/media/Track 3.jpg": "/static/media/Track 3.a953411555397013c5a9.jpg",
+    "static/media/Track 7.jpg": "/static/media/Track 7.6dbdfd0c40cfd846e58e.jpg",
+    "static/media/Track 4.jpg": "/static/media/Track 4.0ea0c02a71249176dde3.jpg",
+    "static/media/Track 5.jpg": "/static/media/Track 5.d2b0d715c9d33026898d.jpg",
+    "static/media/Track 8.jpg": "/static/media/Track 8.5918ee74e31680ff1409.jpg",
+    "static/media/Track 10.jpg": "/static/media/Track 10.216fb1b30b0423ad2277.jpg",
+    "static/media/Student.png": "/static/media/Student.fce0d07d4ba0b0f84d12.png",
+    "static/media/Track 1.jpg": "/static/media/Track 1.fbec832d0f0d464c2e4f.jpg",
+    "static/media/Track 11.jpg": "/static/media/Track 11.e5cfc1d2252c8f1d55a8.jpg",
+    "static/media/Track 9.jpg": "/static/media/Track 9.8b6f0a120b1c2281d1ea.jpg",
+    "static/media/Session.jpg": "/static/media/Session.634c7dbb0416492d9cbd.jpg",
+    "static/media/Track 2.jpg": "/static/media/Track 2.66b0de01bdb398344deb.jpg",
+    "index.html": "/index.html",
+    "main.5e20ae9e.css.map": "/static/css/main.5e20ae9e.css.map",
+    "main.82927529.js.map": "/static/js/main.82927529.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5e20ae9e.css",
+    "static/js/main.82927529.js"
+  ]
+}
