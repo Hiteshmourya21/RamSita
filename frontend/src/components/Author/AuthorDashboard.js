@@ -1,10 +1,11 @@
 import axios from "axios";
-import {  useLocation } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 const AuthorDashboard = () => {
   const location = useLocation();
   const state = location.state;
+  const navigate = useNavigate();
   const [showAuthorDetails, setShowAuthorDetails] = useState(false);
   const [track, setTrack] = React.useState({
     "title": "",
@@ -17,6 +18,7 @@ const AuthorDashboard = () => {
     "facultyCoordinator": ""
 });
   const [authorsData, setAuthorsData] = React.useState([]);
+  const [author, setAuthor] = React.useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -27,11 +29,11 @@ const AuthorDashboard = () => {
             );
             // console.log(trackResponse.data);
             if (trackResponse.data) {
-              setTrack(trackResponse.data);
-    
+              setTrack(trackResponse.data.track);
+              setAuthor(trackResponse.data.author);
               const authorsResponse = await axios.get(
                 `${process.env.REACT_APP_BASE_URL}/author/getAllAuthor`,
-                { params: { id: trackResponse.data._id } }
+                { params: { id: trackResponse.data.track._id } }
               );
               console.log(authorsResponse.data);
               setAuthorsData(authorsResponse.data);
@@ -43,6 +45,9 @@ const AuthorDashboard = () => {
     fetchUser();
     }, []);
   
+    const handleAddPresentation = () => {
+      navigate('/add-presentation', { state: { trackId: track._id , pid:author.pid } });
+    };
 
   if(authorsData.length === 0){
     return <div>Loading...</div>;
@@ -288,6 +293,7 @@ const AuthorDashboard = () => {
             fontSize: "1rem",
             cursor: "pointer",
           }}
+          onClick={handleAddPresentation}
         >
           Add Presentation
         </button>

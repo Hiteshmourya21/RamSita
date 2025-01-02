@@ -11,29 +11,35 @@ const VenueDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const trackResponse = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/admin/track/getInfo`,
-          { params: { title: state.title } }
-        );
-        console.log(trackResponse.data)
-        if (trackResponse.data.track) {
-          const { venue, date, time, sessionChair, supervisor, rapparteur, facultyCoordinator } =
-            trackResponse.data.track;
-          setVenue(venue);
-          setDate(new Date(date).toISOString().split("T")[0]);
-          setTime(time);
-          setSessionChair(sessionChair);
-          setSupervisor(supervisor);
-          setRapparteur(rapparteur);
-          setFacultyCoordinator(facultyCoordinator);
-          setFacultyData(trackResponse.data.faculty);
+        const facultyResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/admin/faculty/getInfo`);
+        if (facultyResponse.data.faculty) {
+          setFacultyData(facultyResponse.data.faculty);
 
-          const authorsResponse = await axios.get(
-            `${process.env.REACT_APP_BASE_URL}/author/getAllAuthor`,
-            { params: { id: trackResponse.data.track._id } }
+          const trackResponse = await axios.get(
+            `${process.env.REACT_APP_BASE_URL}/admin/track/getInfo`,
+            { params: { title: state.title } }
           );
-          console.log(authorsResponse.data);
-          setAuthorsData(authorsResponse.data);
+
+          if (trackResponse.data.track) {
+            const { venue, date, time, sessionChair, supervisor, rapparteur, facultyCoordinator } =
+              trackResponse.data.track;
+            setVenue(venue);
+            setDate(new Date(date).toISOString().split("T")[0]);
+            setTime(time);
+            setSessionChair(sessionChair);
+            setSupervisor(supervisor);
+            setRapparteur(rapparteur);
+            setFacultyCoordinator(facultyCoordinator);
+
+            const authorsResponse = await axios.get(
+              `${process.env.REACT_APP_BASE_URL}/author/getAllAuthor`,
+              { params: { id: trackResponse.data.track._id } }
+            );
+            setAuthorsData(authorsResponse.data);
+          }
+        } else {
+          alert("No faculty found");
+          navigate("/admin/addFaculty");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -42,8 +48,6 @@ const VenueDetail = () => {
 
     fetchData();
   }, [state.title]);
-
-
 
   const [venue, setVenue] = React.useState("");
   const [date, setDate] = React.useState("");
@@ -54,14 +58,17 @@ const VenueDetail = () => {
   const [rapparteur, setRapparteur] = React.useState("");
   const [authorsData, setAuthorsData] = React.useState([]);
   const [facultyData, setFacultyData] = React.useState([]);
-  
 
+  // Filtering faculty data to exclude assigned faculty from the dropdown options
+  const filteredFaculty = facultyData.filter(faculty =>
+    faculty.name !== sessionChair && faculty.name !== supervisor && faculty.name !== rapparteur && faculty.name !== facultyCoordinator
+  );
 
   const handleBackButtonClick = () => {
     alert("Go back to the previous page!");
   };
 
-  const handleSubmitClick = async(e) => {
+  const handleSubmitClick = async (e) => {
     e.preventDefault();
     if (
       !state.title ||
@@ -79,19 +86,18 @@ const VenueDetail = () => {
       return;
     }
     const data = {
-      title : state.title,
-      trackNo : state.id.toString(),
+      title: state.title,
+      trackNo: state.id.toString(),
       description: state.description,
-      date, 
-      time, 
-      sessionChair, 
-      supervisor, 
-      rapparteur, 
-      venue, 
-      facultyCoordinator 
-    }
+      date,
+      time,
+      sessionChair,
+      supervisor,
+      rapparteur,
+      venue,
+      facultyCoordinator,
+    };
     try {
-      console.log(data);
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/admin/track/save`, data);
       console.log(response.data);
     } catch (error) {
@@ -99,13 +105,8 @@ const VenueDetail = () => {
     }
   };
 
-  const handleEmailClick = (authorIndex) => {
-    alert(`Email button clicked for Author ${authorIndex + 1}`);
-  };
-
   return (
     <div>
-      {/* Container for Venue Details */}
       <div className="container">
         <header>
           <button className="back-button" onClick={handleBackButtonClick}>
@@ -118,7 +119,7 @@ const VenueDetail = () => {
         <table>
           <tr>
             <th>
-              Venue :-
+              Venue:
               <select value={venue} id="VenueRoom" onChange={(e) => setVenue(e.target.value)}>
                 <option value=""></option>
                 <option value="L341 3rd block 3 floor">L341 3rd block 3</option>
@@ -129,80 +130,92 @@ const VenueDetail = () => {
             </th>
             <td>
               <th>
-                Date:-
-                <input id="appointment-time" type="date" name="appointment-time" value={date} onChange={(e) => setDate(e.target.value)}/>
+                Date:
+                <input id="appointment-time" type="date" name="appointment-time" value={date} onChange={(e) => setDate(e.target.value)} />
               </th>
             </td>
             <td>
               <th>
-                Time:-
-                <input id="appointment-time" type="time" name="appointment-time" value={time} onChange={(e) => setTime(e.target.value)}/>
+                Time:
+                <input id="appointment-time" type="time" name="appointment-time" value={time} onChange={(e) => setTime(e.target.value)} />
               </th>
             </td>
           </tr>
         </table>
         <table>
-          
           <tr>
-          <td>{state.title}</td>
-          <td>{state.description}</td>
+            <td>{state.title}</td>
+            <td>{state.description}</td>
           </tr>
           <tr>
-                <td>Supervisors</td>
-                <td>
-                  <select value={ supervisor} id="supervisor" onChange={(e) => setSupervisor(e.target.value)}>
-                  <option value="">Select Faculty</option>
-                  {facultyData.map(faculty => (
-                    <option key={faculty._id} value={faculty.name}>
-                      {faculty.name}
-                    </option>
-                     ))}
-                  </select>
-                </td>
-              </tr>
+            <td>Supervisors</td>
+            <td>
+              <select value={supervisor} id="supervisor" onChange={(e) => setSupervisor(e.target.value)}>
+                <option value="">Select Faculty</option>
+                {/* Add selected supervisor as option */}
+                <option value={supervisor}>{supervisor}</option>
+                {/* Render the rest of the filtered faculty */}
+                {filteredFaculty.map(faculty => (
+                  <option key={faculty._id} value={faculty.name}>
+                    {faculty.name}
+                  </option>
+                ))}
+              </select>
+            </td>
+          </tr>
           <tr>
-                <td>Session Chair</td>
-                <td>
-                  <select value={sessionChair} id="sessionChair" onChange={(e) => setSessionChair(e.target.value)}>
-                  <option value="">Select Faculty</option>
-                  {facultyData.map(faculty => (
-                    <option key={faculty._id} value={faculty.name}>
-                      {faculty.name}
-                    </option>
-                     ))}
-                  </select>
-                </td>
-              </tr>
+            <td>Session Chair</td>
+            <td>
+              <select value={sessionChair} id="sessionChair" onChange={(e) => setSessionChair(e.target.value)}>
+                <option value="">Select Faculty</option>
+                {/* Add selected session chair as option */}
+                <option value={sessionChair}>{sessionChair}</option>
+                {/* Render the rest of the filtered faculty */}
+                {filteredFaculty.map(faculty => (
+                  <option key={faculty._id} value={faculty.name}>
+                    {faculty.name}
+                  </option>
+                ))}
+              </select>
+            </td>
+          </tr>
           <tr>
-                <td>Rapporteur</td>
-                <td>
-                  <select value={ rapparteur} id="rapparteur" onChange={(e) => setRapparteur(e.target.value)}>
-                  <option value="">Select Faculty</option>
-                  {facultyData.map(faculty => (
-                    <option key={faculty._id} value={faculty.name}>
-                      {faculty.name}
-                    </option>
-                     ))}
-                  </select>
-                </td>
-              </tr>
+            <td>Rapporteur</td>
+            <td>
+              <select value={rapparteur} id="rapparteur" onChange={(e) => setRapparteur(e.target.value)}>
+                <option value="">Select Faculty</option>
+                {/* Add selected rapporteur as option */}
+                <option value={rapparteur}>{rapparteur}</option>
+                {/* Render the rest of the filtered faculty */}
+                {filteredFaculty.map(faculty => (
+                  <option key={faculty._id} value={faculty.name}>
+                    {faculty.name}
+                  </option>
+                ))}
+              </select>
+            </td>
+          </tr>
           <tr>
-                <td>Faculty Coordinator</td>
-                <td>
-                  <select value={facultyCoordinator} id="facultyCoordinator" onChange={(e) => setFacultyCoordinator(e.target.value)}>
-                  <option value="">Select Faculty</option>
-                  {facultyData.map(faculty => (
-                    <option key={faculty._id} value={faculty.name}>
-                      {faculty.name}
-                    </option>
-                     ))}
-                  </select>
-                </td>
-              </tr>
+            <td>Faculty Coordinator</td>
+            <td>
+              <select value={facultyCoordinator} id="facultyCoordinator" onChange={(e) => setFacultyCoordinator(e.target.value)}>
+                <option value="">Select Faculty</option>
+                {/* Add selected faculty coordinator as option */}
+                <option value={facultyCoordinator}>{facultyCoordinator}</option>
+                {/* Render the rest of the filtered faculty */}
+                {filteredFaculty.map(faculty => (
+                  <option key={faculty._id} value={faculty.name}>
+                    {faculty.name}
+                  </option>
+                ))}
+              </select>
+            </td>
+          </tr>
         </table>
-          <input type="submit" value="Submit" onClick={handleSubmitClick} />
+        <input type="submit" value="Submit" onClick={handleSubmitClick} />
       </div>
 
+      
       {/* Container for Presentation Paper */}
       <div className="container">
         <header>

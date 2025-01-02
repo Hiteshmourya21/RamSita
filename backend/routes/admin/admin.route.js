@@ -132,12 +132,43 @@ router.get("/dashboard", authMiddleware(["admin"]), (req, res) => {
     const { title } = req.query; // Access the title from query parameters
     // console.log(req.query); // Log query parameters for debugging
     try {
-      const track = await Track.findOne({ title }); // Replace `trackNo` with `title` or the correct field
-      const faculty = await EmailData.find();
-      res.json({track,faculty});
+      const track = await Track.findOne({ title }); 
+      res.json({track});
     } catch (error) {
       res.status(500).json({ message: "Error fetching tracks" });
     }
   });
+
+  router.get("/faculty/getInfo", async (req, res) => {
+    try {
+      // Fetch existing session chairs, rapporteurs, faculty coordinators, and supervisors from the track details
+      const trackDetails = await Track.find();
+  
+      // Fetch all faculty members and session chairs
+      const faculty = await EmailData.find(); // Assuming this returns the faculty data
+      const sessionChairEmails = trackDetails.map(track => track.sessionChair);
+      const rapporteurEmails = trackDetails.map(track => track.rapparteur);
+      const coordinatorEmails = trackDetails.map(track => track.facultyCoordinator);
+      const supervisorEmails = trackDetails.map(track => track.supervisor);
+  
+      // Combine all emails of faculty assigned to roles (session chair, rapporteur, faculty coordinator, supervisor)
+      const assignedFacultyEmails = [
+        ...sessionChairEmails,
+        ...rapporteurEmails,
+        ...coordinatorEmails,
+        ...supervisorEmails,
+      ];
+  
+      // Filter out faculty members whose name is in the assigned faculty list
+      const filteredFaculty = faculty.filter(member => 
+        !assignedFacultyEmails.includes(member.name)
+      );
+  
+      res.json({ faculty: filteredFaculty });
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching faculty" });
+    }
+  });
+  
   
   export default router;

@@ -53,26 +53,27 @@ router.post("/signup/session", async (req, res) => {
 // Author Signup
 router.post("/signup/author", async (req, res) => {
   const { email, pid, title, members, trackno } = req.body;
-  // console.log(req.body);
   try {
+    // Check if the track exists
     const findTrack = await Track.findOne({ trackNo: trackno });
     if (!findTrack) {
-      res.status(404).json({ message: "Track not found." });
-      }
+      return res.status(404).json({ message: "Track not found." });
+    }
+
     // Generate a password from pid and first letters of each word in the title
     const titleInitials = title
       .split(" ")
       .map((word) => word[0]) // Get the first letter of each word
       .join("")
       .toUpperCase(); // Optional: Convert to uppercase for consistency
-    const rawPassword = `${pid}${titleInitials}${Math.floor(Math.random() * 500)+100}`;
+    const rawPassword = `${pid}${titleInitials}${Math.floor(Math.random() * 500) + 100}`;
 
     // Hash the generated password
     const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
     // Create the author document
     const author = new Author({
-      title, 
+      title,
       email,
       password: hashedPassword,
       members: members.map((member) => ({
@@ -84,34 +85,31 @@ router.post("/signup/author", async (req, res) => {
 
     // Save the author to the database
     await author.save();
+
+    // Send email to the author with the generated password
     try {
-      const authorDetail ={
+      const authorDetail = {
         title,
         pid,
         email,
-        password:rawPassword,
-        track : findTrack,
-      }
+        password: rawPassword,
+        track: findTrack,
+      };
       await sendAuthurMail(email, authorDetail);
       res.status(201).json({
         message: "Author registered successfully and mail sent.",
       });
-      
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error sending email." });
     }
-    // Send the generated password to the author
   } catch (err) {
-   //Handle duplicate email error
-    if (err.code === 11000) {
-      res.status(400).json({ message: "Email already exists." });
-    } else {
-      console.error(err);
-      res.status(500).json({ message: "Error registering author." });
-    }
+    // Handle error
+    console.error(err);
+    res.status(500).json({ message: "Error registering author." });
   }
 });
+
 
 // Login
 router.post("/login", async (req, res) => {

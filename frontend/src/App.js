@@ -8,6 +8,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import SessionDashboard from './components/SessionChair/SessionDashboard';
 import AuthorDashboard from './components/Author/AuthorDashboard';
 import AddFaculty from './components/AddFaculty';
+import AddPresentationPage from './components/Author/AddPresentaionPage';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/admin/addFaculty" element={< AddFaculty />} />
           <Route path="/session/dashboard" element={< SessionDashboard />} />
           <Route path="/author/dashboard" element={< AuthorDashboard />} />
+          <Route path="/add-presentation" element={< AddPresentationPage />} />
         </Routes>
       </Router>
     </div>

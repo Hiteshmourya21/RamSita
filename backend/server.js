@@ -18,7 +18,8 @@ const PORT = process.env.PORT || 5000;
 
 
 app.use(express.json()); //parse JSON request body
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/admin", adminRoutes)
