@@ -34,7 +34,7 @@ const VenueDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const facultyResponse = await axiosInstance.get(`${process.env.REACT_APP_BASE_URL}/admin/faculty/getInfo`);
+        const facultyResponse = await axiosInstance.get(`/admin/faculty/getInfo`);
         if (facultyResponse.data) {
           setInternalFacultyData(facultyResponse.data.internalFaculty || []);
           setExternalFacultyData(facultyResponse.data.externalFaculty || []);
@@ -46,7 +46,7 @@ const VenueDetail = () => {
           return;
         }
 
-        const trackResponse = await axiosInstance.get(`${process.env.REACT_APP_BASE_URL}/admin/track/getInfo`, {
+        const trackResponse = await axiosInstance.get(`/admin/track/getInfo`, {
           params: { title: state.title },
         });
 
@@ -60,7 +60,7 @@ const VenueDetail = () => {
           setRapparteur(rapparteur);
           setFacultyCoordinator(facultyCoordinator);
           
-          const authorsResponse = await axiosInstance.get(`${process.env.REACT_APP_BASE_URL}/author/getAllAuthor`, {
+          const authorsResponse = await axiosInstance.get(`/author/getAllAuthor`, {
             params: { id: trackResponse.data.track._id },
           });
           setAuthorsData(authorsResponse.data || []);
@@ -99,7 +99,7 @@ const VenueDetail = () => {
     const loadingToastId = toast.loading("Saving track, please wait...", { position: "top-right" });
 
     try {
-      const response = await axiosInstance.post(`${process.env.REACT_APP_BASE_URL}/admin/track/save`, data);
+      const response = await axiosInstance.post(`/admin/track/save`, data);
       toast.update(loadingToastId, { render: response.data.message, type: "success", isLoading: false, autoClose: 3000 });
     } catch (error) {
       console.error(error);

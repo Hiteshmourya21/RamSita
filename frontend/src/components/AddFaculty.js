@@ -28,7 +28,7 @@ const AddFaculty = () => {
 
     try {
       const response = await axiosInstance.post(
-        `${process.env.REACT_APP_BASE_URL}/register/faculty`,
+        `/register/faculty`,
         formData
       );
 

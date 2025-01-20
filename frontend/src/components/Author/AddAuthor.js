@@ -48,7 +48,7 @@ const AddAuthor = () => {
       )}\nTrack Number: ${state.id}`
     );
     try{
-      const response = await axiosInstance.post(`${process.env.REACT_APP_BASE_URL}/auth/signup/author`,{pid:paperId,title,email,members:authors,trackno:state.id});
+      const response = await axiosInstance.post(`/auth/signup/author`,{pid:paperId,title,email,members:authors,trackno:state.id});
       console.log(response.data);
       setFormData({ paperId: "", title: "", email: "", authors: [""] });
       navigate('/admin/TrackDetail',{ state: state });

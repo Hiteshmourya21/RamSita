@@ -26,7 +26,7 @@ const LoginForm = () => {
         const loadingToastId = toast.loading("Logging in, please wait...", { position: "top-right" });
       try{
         const role = selectedRole;
-        const response = await axiosInstance.post(`${process.env.REACT_APP_BASE_URL}/auth/login`, { email, password, role });
+        const response = await axiosInstance.post(`/auth/login`, { email, password, role });
         localStorage.setItem('token', response.data.token);
         // Handle the response from the server
         if(role === 'admin'){

@@ -36,7 +36,7 @@ const AddPresentationPage = () => {
   }
     try {
       const response = await axiosInstance.post(
-        `${process.env.REACT_APP_BASE_URL}/author/uploadPresentation`,
+        `/author/uploadPresentation`,
         formData,
         {
           headers: {

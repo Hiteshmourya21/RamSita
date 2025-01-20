@@ -25,7 +25,7 @@ const AuthorDashboard = () => {
     const fetchUser = async () => {
         try {
             const trackResponse = await axiosInstance.get(
-              `${process.env.REACT_APP_BASE_URL}/author/getDetail`,
+              `/author/getDetail`,
               { params: { email: state } }
             );
             // console.log(trackResponse.data);
@@ -33,7 +33,7 @@ const AuthorDashboard = () => {
               setTrack(trackResponse.data.track);
               setAuthor(trackResponse.data.author);
               const authorsResponse = await axiosInstance.get(
-                `${process.env.REACT_APP_BASE_URL}/author/getAllAuthor`,
+                `/author/getAllAuthor`,
                 { params: { id: trackResponse.data.track._id } }
               );
               console.log(authorsResponse.data);
