@@ -1,0 +1,192 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+  }
+  
+  .container {
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between; /* Ensures proper spacing between elements */
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    background: #f8f8f8;
+    position: relative; /* Ensures positioning works */
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+  }
+  
+  .back-button {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .report-button {
+    margin-left: auto; /* Pushes the button to the right */
+    background: #ff5733; /* New color (Orange-Red) */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+  }
+  
+  .report-button:hover {
+    background: #d84315; /* Darker shade on hover */
+  }
+  
+  
+  .title {
+    font-size: 20px;
+    color: #9C27B0;
+    border-bottom: 2px solid #FFD740;
+    margin-bottom: 16px;
+    padding-bottom: 4px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+  }
+  
+  table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  #venueDetilis, #VenueRoom {
+    width: 25em;
+    font-size: 16px;
+    padding: 1px;
+  }
+  
+  .submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .submit-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .author-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .author-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+  }
+  
+  .author-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .author-name {
+    flex: 1;
+    margin-left: 12px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .email-button {
+    font-size: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-around;
+    position: sticky;
+    bottom: 0;
+    background: #f8f8f8;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+  }
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    border-radius: 8px;
+    text-align: center;
+    width: 250px; /* Ensure a fixed width for better layout */
+  }
+  
+  .modal h2 {
+    margin-top: 0;
+    margin-bottom: 15px; /* Add spacing below the heading */
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .modal button {
+    width: 100px;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .modal button:hover {
+    background: #0056b3;
+  }
+  
