@@ -14,7 +14,20 @@ const authorSchema = new mongoose.Schema(
     ],
     presentationPath: String,
     status: { type: String, default: "pending" },
-    marks: { type: Number, default: 0 },
+    scores: {
+      originality: { type: Number, default: 0 },
+      relevance: { type: Number, default: 0 },
+      quality: { type: Number, default: 0 },
+      clarity: { type: Number, default: 0 },
+      presentation: { type: Number, default: 0 },
+      marks: { type: Number, default: 0 }
+    },
+    isOnline: { type: Boolean, default: false },
+    meetingDetails:{
+      meetingLink: { type: String },
+      startTime: { type: String },
+      endTime: { type: String }
+    },
     presenter: {
       name: { type: String },
     },

@@ -52,7 +52,9 @@ router.post("/signup/session", async (req, res) => {
 
 // Author Signup
 router.post("/signup/author", async (req, res) => {
-  const { email, pid, title, members, trackno } = req.body;
+  const { email, pid, title, members, trackno, isOnline, meetingDetails } = req.body;
+
+  // console.log(req.body);
   try {
     // Check if the track exists
     const findTrack = await Track.findOne({ trackNo: trackno });
@@ -71,18 +73,22 @@ router.post("/signup/author", async (req, res) => {
     // Hash the generated password
     const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
-    // Create the author document
-    const author = new Author({
-      title,
-      email,
-      password: hashedPassword,
-      members: members.map((member) => ({
-        name: member,
-      })),
-      pid,
-      track: findTrack._id,
-    });
 
+
+  
+    const author = new Author({
+        title,
+        email,
+        password: hashedPassword,
+        members: members.map((member) => ({
+          name: member,
+        })),
+        pid,
+        track: findTrack._id,
+        isOnline,
+        meetingDetails
+      });
+   
     // Save the author to the database
     await author.save();
 
@@ -94,6 +100,8 @@ router.post("/signup/author", async (req, res) => {
         email,
         password: rawPassword,
         track: findTrack,
+        isOnline,
+        meetingDetails
       };
       await sendAuthurMail(email, authorDetail);
       res.status(201).json({

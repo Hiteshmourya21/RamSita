@@ -1,54 +1,35 @@
 import React, { useState } from "react";
-import axios from "axios";
+
 import {  useLocation, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../lib/axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const AddPresentationPage = () => {
-  const [file, setFile] = useState(null);
   const location = useLocation();
   const state = location.state;
   // console.log(state);
-  const [message, setMessage] = useState("");
-  const trackId = location?.state?.trackId;
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+  const presentation = state.presentation;
+  const [link, setLink] = useState(state.presentation||"");
+
+
 
   const handleUpload = async () => {
-    if (!file) {
-      setMessage('Please select a file!');
+    if(link.trim() === ""){
+      toast.error("Please enter a valid link");
       return;
     }
-  
-  //   const formData = new FormData();
-  //   formData.append('file', file);
-  //   formData.append('pid', state.pid);  // Ensure email is correctly appended
-  //   formData.append('trackId', trackId);
-    
-  // for (let [key, value] of formData.entries()) {
-  //   console.log(key, value);  // Log formData contents
-  // }
-  const formData = {
-    file: file,
-    pid: state.pid,
-    trackId: trackId,
-  }
+
     try {
       const response = await axiosInstance.post(
         `/author/uploadPresentation`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
+        { link, pid: state.pid }
       );
-      setMessage('File uploaded successfully!');
-      console.log('Uploaded file path:', response.data.path);
+      toast.success(response.data.message);
+  
     } catch (error) {
       console.error('Error uploading file:', error);
-      setMessage('Error uploading file. Please try again.');
+      toast.error("Error uploading file");
     }
   };
   
@@ -56,8 +37,28 @@ const AddPresentationPage = () => {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h2>Upload Presentation</h2>
-      <input type="file" onChange={handleFileChange} />
+      <div>
+
+      <h1 style={{
+        textAlign: "center",
+        color: "#9c27b0",
+        fontFamily: "Arial",
+        fontSize: "2rem",
+        marginBottom: "50px",
+      }}>Upload Presentation</h1>
+
+      
+      <input type="text"   placeholder="Enter Drive Link Here...." value={link} onChange={(e) => setLink(e.target.value)}
+        style={{
+          padding: "10px",
+          width: "100%",
+          boxSizing: "border-box",
+          marginBottom: "20px",
+          borderRadius: "5px",
+          border: "1px solid #9c27b0",
+          maxWidth: "500px",
+        }}
+      />
       <button
         style={{
           marginLeft: "10px",
@@ -70,9 +71,11 @@ const AddPresentationPage = () => {
         }}
         onClick={handleUpload}
       >
-        Upload
+        Upload Drive Link
       </button>
-      {message && <p>{message}</p>}
+      </div>
+      
+      <ToastContainer />
     </div>
   );
 };

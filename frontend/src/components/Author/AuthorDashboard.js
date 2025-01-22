@@ -47,7 +47,7 @@ const AuthorDashboard = () => {
     }, []);
   
     const handleAddPresentation = () => {
-      navigate('/add-presentation', { state: { trackId: track._id , pid:author.pid } });
+      navigate('/add-presentation', { state: { pid:author.pid, presentation:author.presentationPath } });
     };
 
   if(authorsData.length === 0){

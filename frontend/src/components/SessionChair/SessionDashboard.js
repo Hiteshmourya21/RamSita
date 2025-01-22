@@ -60,13 +60,16 @@ const SessionDashboard = () => {
   };
 
 
+  const addTime = (timeString, hoursToAdd, minutesToAdd) => {
+    const [hours, minutes] = timeString.split(":").map(Number);
+    const totalMinutes = hours * 60 + minutes + hoursToAdd * 60 + minutesToAdd;
+    const newHours = Math.floor(totalMinutes / 60) % 24;
+    const newMinutes = totalMinutes % 60;
+    return `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
+  };
+
 
   return (
-    // <div>
-    // <h1>Welcome, {user.name}</h1>
-    // <p>Email: {user.email}</p>
-    // <p>Track: {user.track}</p>
-    // </div>
     <div>
       {/* Container for Venue Details */}
       <div className="container">
@@ -77,12 +80,12 @@ const SessionDashboard = () => {
           <tr>
             <th>
               Venue :-
-              <p>{track.venue}</p>
+              <span> {track.venue}</span>
             </th>
             <td>
               <th>
                 Date:-
-                <span>
+                <span >
                     {track.date.split("T")[0]}
                   {/* {new Date(track.date).toISOString().split("T")[0]} */}
                 </span>
@@ -90,10 +93,16 @@ const SessionDashboard = () => {
             </td>
             <td>
               <th>
-                Time:-
-                <p>{track.time}</p>
-               </th>
+                Start Time:-
+                <span style={{"fontWeight":"normal"}}>{track.time} </span>
+              </th>
             </td>
+              <td>
+                <th>
+                End Time:-
+                <span style={{"fontWeight":"normal"}}>{addTime(track.time, 1, 50)} </span>
+                </th>
+              </td>
           </tr>
         </table>
         <table>
@@ -146,9 +155,15 @@ const SessionDashboard = () => {
               <th>Paper Title</th>
               <th>Author Name</th>
               <th>Present</th>
+              <th>Originality</th>
+              <th>Relevance</th>
+              <th>Quality</th>
+              <th>Clarity</th>
+              <th>Presentation</th>
               <th>Marks</th>
               <th>Status</th>
               <th>Presenter</th>
+              <th>Mode</th>
             </tr>
           </thead>
           <tbody>
@@ -173,24 +188,118 @@ const SessionDashboard = () => {
                 <td rowSpan={author.members.length}>
                   <input
                     type="number"
-                    value={author.marks}
+                    value={author.scores.originality}
+                    min="0"
+                    max="10"
                     onChange={(e) => {
+                      if(e.target.value>10){
+                        e.target.value=10;
+                      }
                       const updatedMarks = [...authorsData];
-                      updatedMarks[index].marks = e.target.value;
+                      updatedMarks[index].scores.originality = e.target.value;
                       // console.log(updatedMarks);
                       setAuthorsData(updatedMarks);
                     }}
                   />
                 </td>
                 <td rowSpan={author.members.length}>
-                  <button
-                    className="submit-btn"
-                    style={{
-                      backgroundColor: author.status === "pending" ? "red" : "#4CAF50",
+                  <input
+                    type="number"
+                    value={author.scores.relevance}
+                    min="0"
+                    max="10"
+                    onChange={(e) => {
+                      if(e.target.value>10){
+                        e.target.value=10;
+                      }
+                      const updatedMarks = [...authorsData];
+                      updatedMarks[index].scores.relevance = e.target.value;
+                      // console.log(updatedMarks);
+                      setAuthorsData(updatedMarks);
                     }}
-                  >
-                    {author.status}
-                  </button>
+                  />
+                </td>
+                <td rowSpan={author.members.length}>
+                  <input
+                    type="number"
+                    value={author.scores.quality}
+                    min="0"
+                    max="10"
+                    onChange={(e) => {
+                      if(e.target.value>10){
+                        e.target.value=10;
+                      }
+                      const updatedMarks = [...authorsData];
+                      updatedMarks[index].scores.quality = e.target.value;
+                      // console.log(updatedMarks);
+                      setAuthorsData(updatedMarks);
+                    }}
+                  />
+                </td>
+                <td rowSpan={author.members.length}>
+                  <input
+                    type="number"
+                    value={author.scores.clarity}
+                    min="0"
+                    max="10"
+                    onChange={(e) => {
+                      if(e.target.value>10){
+                        e.target.value=10;
+                      }
+                      const updatedMarks = [...authorsData];
+                      updatedMarks[index].scores.clarity = e.target.value;
+                      // console.log(updatedMarks);
+                      setAuthorsData(updatedMarks);
+                    }}
+                  />
+                </td>
+                <td rowSpan={author.members.length}>
+                  <input
+                    type="number"
+                    value={author.scores.presentation}
+                    min="0"
+                    max="10"
+                    onChange={(e) => {
+                      if(e.target.value>10){
+                        e.target.value=10;
+                      }
+                      const updatedMarks = [...authorsData];
+                      updatedMarks[index].scores.presentation = e.target.value;
+                      // console.log(updatedMarks);
+                      setAuthorsData(updatedMarks);
+                      
+                    }}
+                  />
+                </td>
+                <td rowSpan={author.members.length}>
+                  <input
+                    type="number"
+                  
+                    value={parseInt(author.scores.originality) + parseInt(author.scores.relevance) + parseInt(author.scores.quality) + parseInt(author.scores.clarity) + parseInt(author.scores.presentation)}
+                    onChange={(e) => {
+                      const updatedMarks = [...authorsData];
+                      updatedMarks[index].scores.marks = e.target.value;
+                      // console.log(updatedMarks);
+                      setAuthorsData(updatedMarks);
+                    }}
+                    disabled
+                    style={{"width": "50px"}}
+                  />
+                </td>
+                <td rowSpan={author.members.length}>
+                <a 
+                      href={author.presentationPath}
+                      className="submit-btn"
+                      style={{
+                        backgroundColor: author.status === "pending" ? "red" : "#4CAF50",
+                        textDecoration: "none",
+                        color: "white",
+                        padding: "5px 10px",
+                      }}
+                      target="_blank"
+                    >
+                      {author.status}
+                    </a>
                 </td>
                 <td rowSpan={author.members.length}>
                   <select
@@ -211,6 +320,22 @@ const SessionDashboard = () => {
                     ))}
                   </select>
                 </td>
+                <td rowSpan={author.members.length}>
+                <a 
+                      href={author.meetingDetails?.meetingLink}
+                      className="submit-btn"
+                      style={{
+                        backgroundColor: author.isOnline ? "red" : "#4CAF50",
+                        textDecoration: "none",
+                        color: "white",
+                        padding: "5px 10px",
+                      }}
+                      target="_blank"
+                    >
+                      {author.isOnline ? "Online" : "Offline"}
+                    </a>
+                </td>
+
               </tr>
               {author.members.slice(1).map((member, idx) => (
                 <tr key={idx}>

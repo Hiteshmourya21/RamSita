@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { axiosInstance } from '../../lib/axios';
 
 const AddAuthor = () => {
@@ -9,7 +8,10 @@ const AddAuthor = () => {
     title: "",
     email: "",
     authors: [""],
-    // trackNumber: "",
+    isOnline: false,
+    link: "",
+    startTime: "",
+    endTime: "",
   });
   const location = useLocation();
   const state = location.state;
@@ -20,6 +22,13 @@ const AddAuthor = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleCheckboxChange = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      isOnline: !prevData.isOnline,
     }));
   };
 
@@ -39,25 +48,39 @@ const AddAuthor = () => {
     }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { paperId, title, email, authors } = formData;
-    alert(
-      `Paper ID: ${paperId}\nTitle: ${title}\nEmail: ${email}\nAuthors: ${authors.join(
-        ", "
-      )}\nTrack Number: ${state.id}`
-    );
-    try{
-      const response = await axiosInstance.post(`/auth/signup/author`,{pid:paperId,title,email,members:authors,trackno:state.id});
+    const { paperId, title, email, authors, isOnline, meetingLink, startTime, endTime } = formData;
+
+    const dataToSubmit = {
+      pid: paperId,
+      title,
+      email,
+      members: authors,
+      trackno: state.id,
+      isOnline,
+      meetingDetails: isOnline ? { meetingLink, startTime, endTime } : null,
+    };
+
+    try {
+      const response = await axiosInstance.post(`/auth/signup/author`, dataToSubmit);
       console.log(response.data);
-      setFormData({ paperId: "", title: "", email: "", authors: [""] });
-      navigate('/admin/TrackDetail',{ state: state });
-    }
-    catch(error){
-      if(error.response.status === 400){
+      setFormData({
+        paperId: "",
+        title: "",
+        email: "",
+        authors: [""],
+        isOnline: false,
+        meetingLink: "",
+        startTime: "",
+        endTime: "",
+      });
+      navigate('/admin/TrackDetail', { state: state });
+    } catch (error) {
+      if (error.response.status === 400) {
         alert(error.response.data.message);
       }
-      console.log("Error in adding author",error);
+      console.log("Error in adding author", error);
     }
   };
 
@@ -65,11 +88,12 @@ const AddAuthor = () => {
     <div style={styles.container}>
       <div style={styles.header}>
         <button style={styles.backButton}>
-            <Link to="/admin/dashboard">
-              <strong style={styles.strongText}>←</strong>
-            </Link>
+          <Link to="/admin/dashboard">
+            <strong style={styles.strongText}>←</strong>
+          </Link>
         </button>
-        RAMSITA CONFERENCE</div>
+        RAMSITA CONFERENCE
+      </div>
       <div style={styles.formContainer}>
         <form onSubmit={handleSubmit}>
           <div style={styles.formGroup}>
@@ -138,26 +162,57 @@ const AddAuthor = () => {
             </button>
           </div>
 
-          {/* <div style={styles.formGroup}>
-            <label htmlFor="trackNumber">Track Number:</label>
-            <select
-              id="trackNumber"
-              name="trackNumber"
-              value={formData.trackNumber}
-              onChange={handleInputChange}
-              required
-              style={styles.input}
-            >
-              <option value="" disabled>
-                Select Track Number
-              </option>
-              {Array.from({ length: 13 }, (_, i) => i + 1).map((number) => (
-                <option key={number} value={number}>
-                  {number}
-                </option>
-              ))}
-            </select>
-          </div> */}
+          <div style={styles.formGroup}>
+            <input
+              type="checkbox"
+              id="isOnline"
+              checked={formData.isOnline}
+              onChange={handleCheckboxChange}
+            />
+            <label htmlFor="isOnline">Online</label>
+          </div>
+
+          {formData.isOnline && (
+            <>
+              <div style={styles.formGroup}>
+                <label htmlFor="meetingLink">Meeting Link:</label>
+                <input
+                  type="text"
+                  id="meetingLink"
+                  name="meetingLink"
+                  placeholder="Enter Meeting Link"
+                  value={formData.meetingLink}
+                  onChange={handleInputChange}
+                  required
+                  style={styles.input}
+                />
+              </div>
+              <div style={styles.formGroup}>
+                <label htmlFor="startTime">Start Time:</label>
+                <input
+                  type="time"
+                  id="startTime"
+                  name="startTime"
+                  value={formData.startTime}
+                  onChange={handleInputChange}
+                  required
+                  style={styles.input}
+                />
+              </div>
+              <div style={styles.formGroup}>
+                <label htmlFor="endTime">End Time:</label>
+                <input
+                  type="time"
+                  id="endTime"
+                  name="endTime"
+                  value={formData.endTime}
+                  onChange={handleInputChange}
+                  required
+                  style={styles.input}
+                />
+              </div>
+            </>
+          )}
 
           <button type="submit" style={styles.submitButton}>
             Submit
@@ -170,7 +225,6 @@ const AddAuthor = () => {
     </div>
   );
 };
-
 const styles = {
   container: {
     fontFamily: "Arial, sans-serif",

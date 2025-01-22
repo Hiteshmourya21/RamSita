@@ -205,10 +205,11 @@ const generateReport = (format) => {
               Venue:
               <select value={venue} id="VenueRoom" onChange={(e) => setVenue(e.target.value)}>
                 <option value=""></option>
-                <option value="L341 3rd block 3 floor">Lab 341 3rd block 3</option>
-                <option value="L342 3rd block 3 floor">Lab 342 3rd block 3</option>
-                <option value="L343 3rd block 3 floor">Lab 343 3rd block 3</option>
-                <option value="L340 3rd block 3 floor">Lab 340 3rd block 3</option>
+                <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 337">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 337 </option>
+                <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 343">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 343 </option>
+                <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 285">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 285 </option>
+                <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 339">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 339</option>
+                <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 341">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 341</option>
               </select>
             </th>
             <td>
@@ -342,14 +343,19 @@ const generateReport = (format) => {
                     />
                   </td>
                   <td rowSpan={author.members.length}>
-                    <button
+                    <a 
+                      href={author.presentationPath}
                       className="submit-btn"
                       style={{
                         backgroundColor: author.status === "pending" ? "red" : "#4CAF50",
+                        textDecoration: "none",
+                        color: "white",
+                        padding: "5px 10px",
                       }}
+                      target="_blank"
                     >
                       {author.status}
-                    </button>
+                    </a>
                   </td>
                   <td rowSpan={author.members.length}>{author.presenter}</td>
                 </tr>
