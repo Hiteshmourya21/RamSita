@@ -149,7 +149,7 @@ const AuthorDashboard = () => {
                 fontWeight: "bold",
               }}
             >
-              Supervisors
+              Internal Session Chair
             </td>
             <td
               style={{
@@ -201,6 +201,186 @@ const AuthorDashboard = () => {
         </tbody>
       </table>
 
+      {/* showAuthorDetails */}
+      <table
+      style={{
+        width: "100%",
+        borderCollapse: "collapse",
+        textAlign: "left",
+        backgroundColor: "white",
+        borderRadius: "8px",
+        maxWidth: "800px",
+        overflow: "hidden",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+      }}
+      >
+  <thead>
+    <tr>
+      <th
+        colSpan="2"
+        style={{
+          padding: "15px",
+          backgroundColor: "#9c27b0",
+          color: "white",
+          fontWeight: "bold",
+          fontSize: "1.2rem",
+          textAlign: "center",
+        }}
+      >
+        {author.title}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+         style={{
+          padding: "10px 15px",
+          borderTop: "1px solid #e0e0e0",
+          fontWeight: "bold",
+        }}
+      >
+        PID
+      </td>
+      <td
+         style={{
+          padding: "10px 15px",
+          borderTop: "1px solid #e0e0e0",
+        }}
+      >
+        {author.pid}
+      </td>
+    </tr>
+    <tr>
+      <td
+        style={{
+          padding: "10px 15px",
+          borderTop: "1px solid #e0e0e0",
+          fontWeight: "bold",
+        }}
+      >
+        Members
+      </td>
+      <td
+        style={{
+          padding: "10px 15px",
+          borderTop: "1px solid #e0e0e0",
+        }}
+      >
+        {author.members.map((member) => (
+          <div key={member._id}>
+            <span>
+              {member.name}
+            </span>
+          </div>
+        ))}
+      </td>
+    </tr>
+    <tr>
+      <td
+        style={{
+          padding: "10px 15px",
+          borderTop: "1px solid #e0e0e0",
+          fontWeight: "bold",
+        }}
+      >
+        Status
+      </td>
+      <td
+        style={{
+          padding: "10px 15px",
+          borderTop: "1px solid #e0e0e0",
+        }}
+      >
+        <span style={{ color: author.status === "submitted" ? "green" : "red" }} >{author.status}</span>
+      </td>
+    </tr>
+    <tr>
+      <td
+        style={{
+          padding: "10px 15px",
+          borderTop: "1px solid #e0e0e0",
+          fontWeight: "bold",
+        }}
+      >
+        Mode of Presentation
+      </td>
+      <td
+        style={{
+          padding: "10px 15px",
+          borderTop: "1px solid #e0e0e0",
+          fontWeight: "bold",
+        }}
+      >
+        {author.isOnline ? "Online" : "Offline"}
+      </td>
+    </tr>
+    {author.meetingDetails && (
+      <>
+        <tr>
+          <td
+            style={{
+              padding: "10px 15px",
+              borderTop: "1px solid #e0e0e0",
+              fontWeight: "bold",
+            }}
+          >
+            Meeting Link
+          </td>
+          <td
+            style={{
+              padding: "10px 15px",
+              borderTop: "1px solid #e0e0e0",
+            }}
+          >
+            <a href={author.meetingDetails.meetingLink} target="_blank"> Join Meet </a>
+          </td>
+        </tr>
+        <tr>
+          <td
+            style={{
+              padding: "10px 15px",
+              borderTop: "1px solid #e0e0e0",
+              fontWeight: "bold",
+            }}
+          >
+            Start Time
+          </td>
+          <td
+            style={{
+              padding: "10px 15px",
+              borderTop: "1px solid #e0e0e0",
+            }}
+          >
+            {author.meetingDetails.startTime}
+          </td>
+        </tr>
+        <tr>
+          <td
+            style={{
+              padding: "10px 15px",
+              borderTop: "1px solid #e0e0e0",
+              fontWeight: "bold",
+            }}
+          >
+            End Time
+          </td>
+          <td
+            style={{
+              padding: "10px 15px",
+              borderTop: "1px solid #e0e0e0",
+            }}
+          >
+            {author.meetingDetails.endTime}
+          </td>
+        </tr>
+      </>
+    )}
+  </tbody>
+</table>
+
+             
+
       <table
       style={{
         width: "100%",
@@ -215,6 +395,7 @@ const AuthorDashboard = () => {
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
       }}
     >
+
       <thead>
         <tr style={{ backgroundColor: "#9c27b0", color: "white" }}>
           <th style={{ padding: "10px" }}>Paper ID</th>

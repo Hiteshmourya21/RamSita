@@ -132,8 +132,7 @@ router.post("/login", async (req, res) => {
           user = await Session.findOne({ email });
           break;
         case "author":
-          user = await Author.findOne({ email });
-          if (user) user.password = user.password; // Match team lead password for authors
+           user = await Author.findOne({ pid:email });
           break;
         default:
           return res.status(400).json({ message: "Invalid role specified." });
@@ -142,7 +141,6 @@ router.post("/login", async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: "User not found." });
       }
-  
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid credentials." });
@@ -159,11 +157,12 @@ router.post("/login", async (req, res) => {
         token,
         user: {
           id: user._id,
-          email: user.email || user.teamLead.email,
+          email: user.email,
           role,
         },
       });
     } catch (err) {
+      console.error(err);
       res.status(500).json({ message: "Error logging in." });
     }
   });

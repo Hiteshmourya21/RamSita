@@ -28,7 +28,7 @@ router.get('/getDetail', async (req, res) => {
 
   try {
     // Fetch the session chair based on the email
-    const author = await Author.findOne({ email }); // Use `await` here
+    const author = await Author.findOne({ pid: email }); // Use `await` here
 
     if (!author) {
       return res.status(404).json({ message: 'Author not found' });

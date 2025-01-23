@@ -30,7 +30,7 @@ Password: ${trackDetails.password}
 
 Please make sure to attend the session on the specified date and time.
 
-You can login here : https://ramsitaconference.onrender.com/
+You can login here : https://ramsita.onrender.com/
 
 
 Best regards,
@@ -105,7 +105,7 @@ Please make sure to attach the ppt and reply to this email with the following de
 
 -------------------------------------------
 
-You can login here : https://ramsitaconference.onrender.com/
+You can login here : https://ramsita.onrender.com/
 
 We look forward to your active participation in the session.
 

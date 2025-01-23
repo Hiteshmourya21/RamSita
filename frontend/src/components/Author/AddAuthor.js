@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../lib/axios';
+import { toast, ToastContainer } from 'react-toastify';
 
 const AddAuthor = () => {
   const [formData, setFormData] = useState({
@@ -62,6 +63,8 @@ const AddAuthor = () => {
       meetingDetails: isOnline ? { meetingLink, startTime, endTime } : null,
     };
 
+    const loadingToastId = toast.loading("Saving author, please wait...", { position: "top-right" });
+
     try {
       const response = await axiosInstance.post(`/auth/signup/author`, dataToSubmit);
       console.log(response.data);
@@ -75,17 +78,32 @@ const AddAuthor = () => {
         startTime: "",
         endTime: "",
       });
-      navigate('/admin/TrackDetail', { state: state });
+      toast.update(loadingToastId, { render: response.data.message, type: "success", isLoading: false, autoClose: 3000 });
+      resetStates();
     } catch (error) {
-      if (error.response.status === 400) {
-        alert(error.response.data.message);
-      }
-      console.log("Error in adding author", error);
+      console.error(error);
+      toast.update(loadingToastId, { render: "Error saving author. Please try again!", type: "error", isLoading: false, autoClose: 3000 });
     }
   };
 
+  const resetStates = () =>{
+    setFormData(
+      {
+        paperId: "",
+        title: "",
+        email: "",
+        authors: [""],
+        isOnline: false,
+        link: "",
+        startTime: "",
+        endTime: "",
+      }
+    )
+  }
+
   return (
     <div style={styles.container}>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
       <div style={styles.header}>
         <button style={styles.backButton}>
           <Link to="/admin/dashboard">

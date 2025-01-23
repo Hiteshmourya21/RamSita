@@ -50,7 +50,7 @@ const LoginForm = () => {
       
          // Update the loading toast to error
          toast.update(loadingToastId, {
-           render: "Error Logging in. Please try again!",
+           render: error.response.data.message,
            type: "error",
            isLoading: false,
            autoClose: 3000,
@@ -90,7 +90,12 @@ const LoginForm = () => {
     </div>
 
     <div class={styles.loginBox}>
-        <input type="text" id="login-id" placeholder="Enter ID" value={email} onChange={(e) => setEmail(e.target.value)}/>
+      {selectedRole === "author" ? (
+        <input type="text" id="login-id" placeholder="Enter Paper ID" value={email} onChange={(e) => setEmail(e.target.value)}/>
+      ): (
+        <input type="text" id="login-id" placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+      )}
+        
         <input type="password" id="login-password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
         <button onClick={handleSubmit}>Login</button>
     </div>

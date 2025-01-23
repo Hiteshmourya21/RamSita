@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./VenueDetail.css";
 import { Link, useLocation,useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -30,6 +30,25 @@ const VenueDetail = () => {
   const [rapparteurData, setRapparteurData] = useState([]);
 
   const [showReportModal, setShowReportModal] = useState(false);
+
+
+  const [filterCriteria, setFilterCriteria] = useState("");
+
+  const filteredData = useMemo(() => {
+    if (filterCriteria === "marks") {
+      return [...authorsData].sort((b, a) => a.scores.marks - b.scores.marks);
+    } else if (filterCriteria === "pid") {
+      return [...authorsData].sort((a, b) => a.pid - b.pid);
+    }
+    else if(filterCriteria === "status"){
+      return [...authorsData].sort((a, b) => a.status.localeCompare(b.status));
+    }
+    return authorsData;
+  }, [authorsData, filterCriteria]);
+
+  const handleFilterChange = (e) => {
+    setFilterCriteria(e.target.value);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,12 +146,12 @@ const generateReport = (format) => {
 
     // Define Table Data
     const tableColumn = ["Paper ID", "Paper Title", "Author(s)", "Presenter", "Marks", "Status"];
-    const tableRows = authorsData.map((author) => [
+    const tableRows = filteredData.map((author) => [
       author.pid,
       author.title,
       author.members.map(member => member.name).join(", "),
       author.presenter,
-      author.marks,
+      author.scores.marks,
       author.status
     ]);
 
@@ -146,12 +165,12 @@ const generateReport = (format) => {
     doc.save(`${fileName}.pdf`);
   } else if (format === "excel") {
     const ws = XLSX.utils.json_to_sheet(
-      authorsData.map((author) => ({
+      filteredData.map((author) => ({
         "Paper ID": author.pid,
         "Paper Title": author.title,
         "Author(s)": author.members.map(member => member.name).join(", "),
         "Presenter": author.presenter,
-        "Marks": author.marks,
+        "Marks": author.scores.marks,
         "Status": author.status
       }))
     );
@@ -165,7 +184,19 @@ const generateReport = (format) => {
 };
   
   
-  
+  const handleUpdateAuthor = async (author) => {
+    const loadingToastId = toast.loading("Submitting authors data, please wait...", { position: "top-right" });
+    
+    try {
+        const response = await axiosInstance.put(`/session/authors/bulk-update`, filteredData);
+        toast.update(loadingToastId, { render: response.data.message, type: "success", isLoading: false, autoClose: 3000 });
+        
+      } catch (error) {
+        console.log(error);
+        toast.update(loadingToastId, { render: "Error submitting. Please try again!", type: "error", isLoading: false, autoClose: 3000 });
+      }
+
+  }
   
 
   return (
@@ -226,6 +257,8 @@ const generateReport = (format) => {
             </td>
           </tr>
         </table>
+
+
         <table>
           <tr>
             <td>{state.title}</td>
@@ -309,6 +342,22 @@ const generateReport = (format) => {
             Presentation Paper
           </h1>
         </header>
+
+        <div style={styles.filterContainer}>
+        <label htmlFor="filter" style={styles.label}>Filter By:</label>
+        <select
+          id="filter"
+          value={filterCriteria}
+          onChange={handleFilterChange}
+          style={styles.select}
+        >
+          <option value="">Select...</option>
+          <option value="pid">PID</option>
+          <option value="marks">Marks</option>
+          <option value="status">Status</option>
+        </select>
+      </div>
+
         <table>
           <thead>
             <tr>
@@ -322,8 +371,7 @@ const generateReport = (format) => {
             </tr>
           </thead>
           <tbody>
-          {[...authorsData]
-            .sort((a, b) => b.marks - a.marks) // Sorting in descending order
+          {filteredData
             .map((author, index) => (
               <React.Fragment key={index}>
                 <tr>
@@ -334,10 +382,13 @@ const generateReport = (format) => {
                   <td rowSpan={author.members.length}>
                     <input
                       type="number"
-                      value={author.marks}
+                      value={author.scores.marks}
+                      min="0"
+                      max="50"
                       onChange={(e) => {
+                        if(e.target.value > 50) return
                         const updatedMarks = [...authorsData];
-                        updatedMarks[index].marks = e.target.value;
+                        updatedMarks[index].scores.marks = e.target.value;
                         setAuthorsData(updatedMarks);
                       }}
                     />
@@ -369,9 +420,19 @@ const generateReport = (format) => {
             ))}
         </tbody>
         </table>
-        <button className="add-work add-Paper" onClick={() => navigate('/admin/addAuthor', { state: state })}>
-          <span>+ Add work</span>
-        </button>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          marginTop: "20px",
+        }}> 
+          <button className="specialBttn" onClick={handleUpdateAuthor} style={{backgroundColor: "blue"}}>
+            <span>Update</span>
+          </button>
+          <button className="specialBttn" onClick={() => navigate('/admin/addAuthor', { state: state })}>
+            <span>+ Add work</span>
+          </button>
+        </div>
+        
       </div>
 
       <footer className="footer">
@@ -379,6 +440,51 @@ const generateReport = (format) => {
       </footer>
     </div>
   );
+};
+
+
+const styles = {
+  container: {
+    padding: "20px",
+    fontFamily: "Arial, sans-serif",
+  },
+  header: {
+    textAlign: "center",
+    marginBottom: "20px",
+  },
+  filterContainer: {
+    marginBottom: "20px",
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+  label: {
+    fontSize: "16px",
+    fontWeight: "bold",
+  },
+  select: {
+    padding: "8px",
+    fontSize: "16px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    marginTop: "10px",
+  },
+  th: {
+    border: "1px solid #ddd",
+    padding: "8px",
+    textAlign: "left",
+    backgroundColor: "#f4f4f4",
+    fontWeight: "bold",
+  },
+  td: {
+    border: "1px solid #ddd",
+    padding: "8px",
+    textAlign: "left",
+  },
 };
 
 export default VenueDetail;

@@ -3,6 +3,7 @@ import "./SessionDashboard.css";
 import { Link, useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
 import { axiosInstance } from "../../lib/axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const SessionDashboard = () => {
   const location = useLocation();
@@ -51,11 +52,15 @@ const SessionDashboard = () => {
 
 
   const handleSubmitEvent = async() => {
+    const loadingToastId = toast.loading("Submitting authors data, please wait...", { position: "top-right" });
+
     try {
         const response = await axiosInstance.put(`/session/authors/bulk-update`, authorsData);
-        console.log(response.data);
+        toast.update(loadingToastId, { render: response.data.message, type: "success", isLoading: false, autoClose: 3000 });
+        
       } catch (error) {
         console.log(error);
+        toast.update(loadingToastId, { render: "Error submitting. Please try again!", type: "error", isLoading: false, autoClose: 3000 });
       }
   };
 
@@ -72,6 +77,7 @@ const SessionDashboard = () => {
   return (
     <div>
       {/* Container for Venue Details */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
       <div className="container">
         <header>
           <h1>RAMSITA-2025</h1>
