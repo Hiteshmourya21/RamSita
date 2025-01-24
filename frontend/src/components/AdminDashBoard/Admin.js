@@ -23,19 +23,19 @@ const Admin = () => {
   };
 
   const tracks = [
-    { id: 1, title: 'Track-1', description: 'Artificial Intelligence, Intelligent system & Automation', image: Track1 },
-    { id: 2, title: 'Track-2', description: 'Distributed and Cloud Computing', image: Track2 },
-    { id: 3, title: 'Track-3', description: 'Technology and Innovation - software', image: Track3 },
-    { id: 4, title: 'Track-4', description: 'Big Data, Data Science and Engneering', image: Track4 },
-    { id: 5, title: 'Track-5', description: 'Natural Language processing', image: Track5 },
-    { id: 6, title: 'Track-6', description: 'Augmented reality, Virtual reality and Robotic', image: Track6 },
-    { id: 7, title: 'Track-7', description: 'Multimedia Services and Technologies', image: Track7 },
-    { id: 8, title: 'Track-8', description: '5G, IoT and Futuristics Technologies', image: Track8 },
-    { id: 9, title: 'Track-9', description: 'Ubiquitous Computing, Networking and Cyber Security', image: Track9 },
-    { id: 10, title: 'Track-10', description: 'Green Computing and Sustainability', image: Track10 },
-    { id: 11, title: 'Track-11', description: 'Renewable Energy and Global Sustainability', image: Track11 },
-    { id: 12, title: 'Track-12', description: 'Smart city, Smart systems and VLSI based Technologies', image: Track12 },
-    { id: 13, title: 'Track-13', description: 'Information Technology and Cyber Law', image: Track13 },
+    { id: 1, title: 'Session-1', description: 'Artificial Intelligence, Intelligent system & Automation', image: Track1 },
+    { id: 2, title: 'Session-2', description: 'Distributed and Cloud Computing', image: Track2 },
+    { id: 3, title: 'Session-3', description: 'Technology and Innovation - software', image: Track3 },
+    { id: 4, title: 'Session-4', description: 'Big Data, Data Science and Engneering', image: Track4 },
+    { id: 5, title: 'Session-5', description: 'Natural Language processing', image: Track5 },
+    { id: 6, title: 'Session-6', description: 'Augmented reality, Virtual reality and Robotic', image: Track6 },
+    { id: 7, title: 'Session-7', description: 'Multimedia Services and Technologies', image: Track7 },
+    { id: 8, title: 'Session-8', description: '5G, IoT and Futuristics Technologies', image: Track8 },
+    { id: 9, title: 'Session-9', description: 'Ubiquitous Computing, Networking and Cyber Security', image: Track9 },
+    { id: 10, title:'Session-10', description: 'Green Computing and Sustainability', image: Track10 },
+    { id: 11, title:'Session-11', description: 'Renewable Energy and Global Sustainability', image: Track11 },
+    { id: 12, title:'Session-12', description: 'Smart city, Smart systems and VLSI based Technologies', image: Track12 },
+    { id: 13, title:'Session-13', description: 'Information Technology and Cyber Law', image: Track13 },
   ];
 
   return (

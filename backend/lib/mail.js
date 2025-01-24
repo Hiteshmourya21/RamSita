@@ -20,9 +20,9 @@ export const sendTrackAssignmentEmail = async (sessionChairEmail, trackDetails) 
 
 You have been assigned to the following track:
 
-Track Number: ${trackDetails.trackNo}
-Track Title: ${trackDetails.title}
-Track Description ${trackDetails.description}
+Session Number: ${trackDetails.trackNo}
+Session Title: ${trackDetails.title}
+Session Description ${trackDetails.description}
 Assigned Date: ${new Date(trackDetails.date).toLocaleDateString()}
 Time: ${trackDetails.time}
 Venue: ${trackDetails.venue}
@@ -69,11 +69,11 @@ Dear Author,
 You have been assigned to the following track:
 
 -------------------------------------------
-Track Details:
+Session Details:
 -------------------------------------------
-Track Number: ${authorDetail.track.trackNo}
-Track Title: ${authorDetail.track.title}
-Track Description: ${authorDetail.track.description}
+Session Number: ${authorDetail.track.trackNo}
+Session Title: ${authorDetail.track.title}
+Session Description: ${authorDetail.track.description}
 Assigned Date: ${new Date(authorDetail.track.date).toLocaleDateString()}
 Time: ${authorDetail.track.time}
 Venue: ${authorDetail.track.venue}
@@ -145,9 +145,9 @@ Conference Management Team
   This is to inform you that your track has been rescheduled to another incharge.
   Your previous track details are:
   
-  Track Number: ${trackDetails.trackNo}
-  Track Title: ${trackDetails.title}
-  Track Description ${trackDetails.description}
+  Session Number: ${trackDetails.trackNo}
+  Session Title: ${trackDetails.title}
+  Session Description ${trackDetails.description}
   Assigned Date: ${new Date(trackDetails.date).toLocaleDateString()}
   Time: ${trackDetails.time}
   Venue: ${trackDetails.venue}

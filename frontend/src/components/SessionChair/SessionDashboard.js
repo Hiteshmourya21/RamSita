@@ -331,9 +331,9 @@ const SessionDashboard = () => {
                       href={author.meetingDetails?.meetingLink}
                       className="submit-btn"
                       style={{
-                        backgroundColor: author.isOnline ? "red" : "#4CAF50",
+                        backgroundColor: author.isOnline ? "yellow" : "blue",
                         textDecoration: "none",
-                        color: "white",
+                        color: author.isOnline ? "blue" : "yellow",
                         padding: "5px 10px",
                       }}
                       target="_blank"

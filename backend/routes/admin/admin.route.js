@@ -172,7 +172,7 @@ router.get("/dashboard", authMiddleware(["admin"]), (req, res) => {
         member.type === "external"
       );
 
-      const facultyCoodinator = filteredFaculty.filter(member =>
+      const facultyCoordinator = filteredFaculty.filter(member =>
         member.type === "coordinator"
       );
 
@@ -180,7 +180,7 @@ router.get("/dashboard", authMiddleware(["admin"]), (req, res) => {
         member.type === "student"
       );
    
-      res.json({ internalFaculty,  externalFaculty, facultyCoodinator, student });
+      res.json({ internalFaculty,  externalFaculty, facultyCoordinator, student });
     } catch (error) {
       res.status(500).json({ message: "Error fetching faculty" });
     }
