@@ -315,7 +315,7 @@ const AuthorDashboard = () => {
         {author.isOnline ? "Online" : "Offline"}
       </td>
     </tr>
-    {author.meetingDetails && (
+    {author.isOnline && (
       <>
         <tr>
           <td
@@ -333,45 +333,7 @@ const AuthorDashboard = () => {
               borderTop: "1px solid #e0e0e0",
             }}
           >
-            <a href={author.meetingDetails.meetingLink} target="_blank"> Join Meet </a>
-          </td>
-        </tr>
-        <tr>
-          <td
-            style={{
-              padding: "10px 15px",
-              borderTop: "1px solid #e0e0e0",
-              fontWeight: "bold",
-            }}
-          >
-            Start Time
-          </td>
-          <td
-            style={{
-              padding: "10px 15px",
-              borderTop: "1px solid #e0e0e0",
-            }}
-          >
-            {author.meetingDetails.startTime}
-          </td>
-        </tr>
-        <tr>
-          <td
-            style={{
-              padding: "10px 15px",
-              borderTop: "1px solid #e0e0e0",
-              fontWeight: "bold",
-            }}
-          >
-            End Time
-          </td>
-          <td
-            style={{
-              padding: "10px 15px",
-              borderTop: "1px solid #e0e0e0",
-            }}
-          >
-            {author.meetingDetails.endTime}
+            <a href={track.meetingLink} target="_blank"> Join Meet </a>
           </td>
         </tr>
       </>

@@ -327,19 +327,10 @@ const SessionDashboard = () => {
                   </select>
                 </td>
                 <td rowSpan={author.members.length}>
-                <a 
-                      href={author.meetingDetails?.meetingLink}
-                      className="submit-btn"
-                      style={{
-                        backgroundColor: author.isOnline ? "yellow" : "blue",
-                        textDecoration: "none",
-                        color: author.isOnline ? "blue" : "yellow",
-                        padding: "5px 10px",
-                      }}
-                      target="_blank"
-                    >
-                      {author.isOnline ? "Online" : "Offline"}
-                    </a>
+                    <select value={author.isOnline} style={{color : author.isOnline ? "green" : "red", fontSize : "16px"}}>
+                      <option value="false">Offline</option>
+                      <option value="true">Online</option>
+                    </select>
                 </td>
 
               </tr>
@@ -365,7 +356,7 @@ const SessionDashboard = () => {
         </tbody>
 
         </table>
-        <button onClick={handleSubmitEvent}>Submit</button>
+        <button className="submit-btn" onClick={handleSubmitEvent}>Submit</button>
       </div>
       <footer className="footer">
         copyright@CSIT Acropolis

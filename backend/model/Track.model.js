@@ -12,6 +12,7 @@ const trackSchema = new mongoose.Schema({
     rapparteur : String,
     venue : String,
     facultyCoordinator : String,
+    meetingLink: String,
 
 },{timestamps: true});
 

@@ -76,7 +76,7 @@ router.get('/getDetail', async (req, res) => {
         // Wait for all updates to complete
         const updatedAuthors = await Promise.all(updatePromises);
 
-        res.status(200).json({ message: 'Authors updated successfully', data: updatedAuthors });
+        res.status(200).json({ message: 'Authors Marks Updated successfully', data: updatedAuthors });
     } catch (error) {
         console.error('Error updating authors:', error);
         res.status(500).json({ error: 'Internal server error', details: error.message });

@@ -23,11 +23,6 @@ const authorSchema = new mongoose.Schema(
       marks: { type: Number, default: 0 }
     },
     isOnline: { type: Boolean, default: false },
-    meetingDetails:{
-      meetingLink: { type: String },
-      startTime: { type: String },
-      endTime: { type: String }
-    },
     presenter: {
       name: { type: String },
     },

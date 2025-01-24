@@ -23,6 +23,7 @@ const VenueDetail = () => {
   const [supervisor, setSupervisor] = useState("");
   const [facultyCoordinator, setFacultyCoordinator] = useState("");
   const [rapparteur, setRapparteur] = useState("");
+  const [meetingLink, setMeetingLink] = useState("");
   const [authorsData, setAuthorsData] = useState([]);
   const [internalFacultyData, setInternalFacultyData] = useState([]);
   const [externalFacultyData, setExternalFacultyData] = useState([]);
@@ -70,7 +71,7 @@ const VenueDetail = () => {
         });
 
         if (trackResponse.data.track) {
-          const { venue, date, time, sessionChair, supervisor, rapparteur, facultyCoordinator } = trackResponse.data.track;
+          const { venue, date, time, sessionChair, supervisor, rapparteur, facultyCoordinator, meetingLink } = trackResponse.data.track;
           setVenue(venue);
           setDate(date ? new Date(date).toISOString().split("T")[0] : "");
           setTime(time);
@@ -78,6 +79,7 @@ const VenueDetail = () => {
           setSupervisor(supervisor);
           setRapparteur(rapparteur);
           setFacultyCoordinator(facultyCoordinator);
+          setMeetingLink(meetingLink)
           
           const authorsResponse = await axiosInstance.get(`/author/getAllAuthor`, {
             params: { id: trackResponse.data.track._id },
@@ -97,7 +99,7 @@ const VenueDetail = () => {
 
   const handleSubmitClick = async (e) => {
     e.preventDefault();
-    if (!state.title || !state.id || !state.description || !date || !time || !sessionChair || !supervisor || !rapparteur || !venue || !facultyCoordinator) {
+    if (!state.title || !state.id || !state.description || !date || !time || !sessionChair || !supervisor || !rapparteur || !venue || !facultyCoordinator ||!meetingLink) {
       toast.error("Please fill all the fields!", { position: "top-right" });
       return;
     }
@@ -113,6 +115,7 @@ const VenueDetail = () => {
       rapparteur,
       venue,
       facultyCoordinator,
+      meetingLink
     };
 
     const loadingToastId = toast.loading("Saving track, please wait...", { position: "top-right" });
@@ -185,7 +188,7 @@ const generateReport = (format) => {
   
   
   const handleUpdateAuthor = async (author) => {
-    const loadingToastId = toast.loading("Submitting authors data, please wait...", { position: "top-right" });
+    const loadingToastId = toast.loading("Submitting authors marks, please wait...", { position: "top-right" });
     
     try {
         const response = await axiosInstance.put(`/session/authors/bulk-update`, filteredData);
@@ -326,6 +329,17 @@ const generateReport = (format) => {
                   </option>
                 ))}
               </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Meeting Link</td>
+            <td>
+                {meetingLink ? (
+                  <a href={meetingLink} target="_blank"> {meetingLink} </a>
+                ) : (
+
+                  <input type="text" value={meetingLink} onChange={(e) => setMeetingLink(e.target.value)} placeholder="Enter Meeting Link"/>
+                )}
             </td>
           </tr>
         </table>

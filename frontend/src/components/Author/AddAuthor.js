@@ -10,9 +10,6 @@ const AddAuthor = () => {
     email: "",
     authors: [""],
     isOnline: false,
-    link: "",
-    startTime: "",
-    endTime: "",
   });
   const location = useLocation();
   const state = location.state;
@@ -51,8 +48,18 @@ const AddAuthor = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { paperId, title, email, authors, isOnline, meetingLink, startTime, endTime } = formData;
+    const { paperId, title, email, authors, isOnline } = formData;
+  
+    if (!paperId || !title || !email || !authors ) {
+      toast.error("Please fill in all fields", { position: "top-right" });
+      return;
+    }
 
+    const confirmSubmission = window.confirm(`Are you sure you want to submit the author's details?\nAuthor Detail : \n Paper ID: ${paperId}\nTitle: ${title}\nEmail: ${email}\nAuthors: ${authors.join(", ")}\nIs Online: ${isOnline}`);
+    if (!confirmSubmission) {
+      return;
+    }
+  
     const dataToSubmit = {
       pid: paperId,
       title,
@@ -60,11 +67,10 @@ const AddAuthor = () => {
       members: authors,
       trackno: state.id,
       isOnline,
-      meetingDetails: isOnline ? { meetingLink, startTime, endTime } : null,
     };
-
+  
     const loadingToastId = toast.loading("Saving author, please wait...", { position: "top-right" });
-
+  
     try {
       const response = await axiosInstance.post(`/auth/signup/author`, dataToSubmit);
       console.log(response.data);
@@ -74,9 +80,6 @@ const AddAuthor = () => {
         email: "",
         authors: [""],
         isOnline: false,
-        meetingLink: "",
-        startTime: "",
-        endTime: "",
       });
       toast.update(loadingToastId, { render: response.data.message, type: "success", isLoading: false, autoClose: 3000 });
       resetStates();
@@ -85,6 +88,7 @@ const AddAuthor = () => {
       toast.update(loadingToastId, { render: "Error saving author. Please try again!", type: "error", isLoading: false, autoClose: 3000 });
     }
   };
+  
 
   const resetStates = () =>{
     setFormData(
@@ -94,9 +98,6 @@ const AddAuthor = () => {
         email: "",
         authors: [""],
         isOnline: false,
-        link: "",
-        startTime: "",
-        endTime: "",
       }
     )
   }
@@ -190,48 +191,9 @@ const AddAuthor = () => {
             <label htmlFor="isOnline">Online</label>
           </div>
 
-          {formData.isOnline && (
-            <>
-              <div style={styles.formGroup}>
-                <label htmlFor="meetingLink">Meeting Link:</label>
-                <input
-                  type="text"
-                  id="meetingLink"
-                  name="meetingLink"
-                  placeholder="Enter Meeting Link"
-                  value={formData.meetingLink}
-                  onChange={handleInputChange}
-                  required
-                  style={styles.input}
-                />
-              </div>
-              <div style={styles.formGroup}>
-                <label htmlFor="startTime">Start Time:</label>
-                <input
-                  type="time"
-                  id="startTime"
-                  name="startTime"
-                  value={formData.startTime}
-                  onChange={handleInputChange}
-                  required
-                  style={styles.input}
-                />
-              </div>
-              <div style={styles.formGroup}>
-                <label htmlFor="endTime">End Time:</label>
-                <input
-                  type="time"
-                  id="endTime"
-                  name="endTime"
-                  value={formData.endTime}
-                  onChange={handleInputChange}
-                  required
-                  style={styles.input}
-                />
-              </div>
-            </>
-          )}
 
+
+          
           <button type="submit" style={styles.submitButton}>
             Submit
           </button>
@@ -240,6 +202,7 @@ const AddAuthor = () => {
       <footer style={styles.footer}>
         copyright@CSIT Acropolis
       </footer>
+        
     </div>
   );
 };

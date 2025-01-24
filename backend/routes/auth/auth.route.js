@@ -52,7 +52,7 @@ router.post("/signup/session", async (req, res) => {
 
 // Author Signup
 router.post("/signup/author", async (req, res) => {
-  const { email, pid, title, members, trackno, isOnline, meetingDetails } = req.body;
+  const { email, pid, title, members, trackno, isOnline } = req.body;
 
   // console.log(req.body);
   try {
@@ -86,7 +86,6 @@ router.post("/signup/author", async (req, res) => {
         pid,
         track: findTrack._id,
         isOnline,
-        meetingDetails
       });
    
     // Save the author to the database
@@ -101,7 +100,7 @@ router.post("/signup/author", async (req, res) => {
         password: rawPassword,
         track: findTrack,
         isOnline,
-        meetingDetails
+        trackno: trackno,
       };
       await sendAuthurMail(email, authorDetail);
       res.status(201).json({

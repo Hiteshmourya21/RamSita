@@ -28,6 +28,7 @@ router.get("/dashboard", authMiddleware(["admin"]), (req, res) => {
       rapparteur,
       venue,
       facultyCoordinator,
+      meetingLink
     } = req.body;
   
     if (
@@ -40,7 +41,8 @@ router.get("/dashboard", authMiddleware(["admin"]), (req, res) => {
       !supervisor ||
       !rapparteur ||
       !venue ||
-      !facultyCoordinator
+      !facultyCoordinator ||
+      !meetingLink
     ) {
       return res.status(400).json({ message: "Please fill all the fields" });
     }
@@ -59,6 +61,7 @@ router.get("/dashboard", authMiddleware(["admin"]), (req, res) => {
           rapparteur,
           venue,
           facultyCoordinator,
+          meetingLink
         },
         { new: true, upsert: true } // Update if found, insert if not
       );

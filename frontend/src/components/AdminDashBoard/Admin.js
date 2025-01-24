@@ -47,14 +47,17 @@ const Admin = () => {
       </header>
       <div className={styles.tracks}>
         {tracks.map((track) => (
+          
           <div
+            onClick={() => navigate('/admin/TrackDetail', { state: track })}
+            style={{ cursor: 'pointer' }}
             key={track.id}
             className={`${styles.track} ${
               styles[`track${track.id % 3 === 1 ? '-1' : track.id % 3 === 2 ? '-2' : '-3'}`]
             }`}
           >
             <div className={styles.content}>
-              <h3 onClick={() => navigate('/admin/TrackDetail', { state: track })}>{track.title}</h3>
+              <h3 >{track.title}</h3>
               <p>{track.description}</p>
             </div>
             <img src={track.image} alt={track.title} className={styles.image} />
