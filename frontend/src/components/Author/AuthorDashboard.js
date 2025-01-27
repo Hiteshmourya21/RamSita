@@ -141,25 +141,7 @@ const AuthorDashboard = () => {
               {track.venue}
             </td>
           </tr>
-          <tr>
-            <td
-              style={{
-                padding: "10px 15px",
-                borderTop: "1px solid #e0e0e0",
-                fontWeight: "bold",
-              }}
-            >
-              Internal Session Chair
-            </td>
-            <td
-              style={{
-                padding: "10px 15px",
-                borderTop: "1px solid #e0e0e0",
-              }}
-            >
-              {track.supervisor}
-            </td>
-          </tr>
+          
           <tr>
             <td
               style={{
