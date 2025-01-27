@@ -118,13 +118,13 @@ const SessionDashboard = () => {
           <td>{track.description}</td>
           </tr>
           <tr>
-                <td>Supervisors</td>
+                <td>Internal Session Chair</td>
                 <td>
                   <p>{track.supervisor}</p>
                 </td>
               </tr>
           <tr>
-                <td>Session Chair</td>
+                <td>External Session Chair</td>
                 <td>
                 <p>{track.sessionChair}</p>
                 </td>

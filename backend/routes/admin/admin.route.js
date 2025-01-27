@@ -150,15 +150,11 @@ router.get("/dashboard", authMiddleware(["admin"]), (req, res) => {
       // Fetch all faculty members and session chairs
       const faculty = await EmailData.find(); // Assuming this returns the faculty data
       const sessionChairEmails = trackDetails.map(track => track.sessionChair);
-      const rapporteurEmails = trackDetails.map(track => track.rapparteur);
-      const coordinatorEmails = trackDetails.map(track => track.facultyCoordinator);
       const supervisorEmails = trackDetails.map(track => track.supervisor);
   
       // Combine all emails of faculty assigned to roles (session chair, rapporteur, faculty coordinator, supervisor)
       const assignedFacultyEmails = [
         ...sessionChairEmails,
-        ...rapporteurEmails,
-        ...coordinatorEmails,
         ...supervisorEmails,
       ];
   
