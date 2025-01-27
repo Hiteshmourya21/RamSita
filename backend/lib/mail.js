@@ -36,7 +36,7 @@ You have been assigned to the following Session:
 Session Number: ${trackDetails.trackNo}
 Session Title: ${trackDetails.title}
 Session Description ${trackDetails.description}
-Assigned Date: ${new Date(trackDetails.date).toLocaleDateString()}
+Assigned Date: ${new Date(trackDetails.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
 Time: ${trackDetails.time}
 Venue: ${trackDetails.venue}
 Password: ${trackDetails.password}
