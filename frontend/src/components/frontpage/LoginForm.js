@@ -29,15 +29,7 @@ const LoginForm = () => {
         const response = await axiosInstance.post(`/auth/login`, { email, password, role });
         localStorage.setItem('token', response.data.token);
         // Handle the response from the server
-        if(role === 'admin'){
-          navigate('/admin/dashboard');
-        }
-        else if(role === 'sessionChair'){
-        navigate('/session/dashboard',{ state: email });
-        }
-        else if(role === 'author'){
-          navigate('/author/dashboard',{ state: email });
-        }
+        window.location.href = '/';
 
         toast.update(loadingToastId, {
                render: response.data.message,

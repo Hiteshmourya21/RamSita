@@ -13,13 +13,14 @@ import Track10 from '../../img/Track 10.jpg';
 import Track11 from '../../img/Track 11.jpg';
 import Track12 from '../../img/Track 12.jpg';
 import Track13 from '../../img/Track 13.jpg';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Admin = () => {
 
   const navigate = useNavigate();
   const handleMenuClick = () => {
-    alert('Menu clicked!');
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
   const tracks = [
@@ -42,16 +43,19 @@ const Admin = () => {
     <div className={styles.dashboard}>
       <header className={styles.header}>
         <div className={styles.menuIcon} onClick={handleMenuClick}>
-          ☰
+          <button className={styles.menuButton} onClick={handleMenuClick}>
+            LogOut
+          </button>
         </div>
       </header>
       <div className={styles.tracks}>
         {tracks.map((track) => (
           
-          <div
-            onClick={() => navigate('/admin/TrackDetail', { state: track })}
-            style={{ cursor: 'pointer' }}
+          <Link
+            to="/admin/TrackDetail" state={track}
+            style={{ cursor: 'pointer', textDecoration: 'none' }}
             key={track.id}
+            
             className={`${styles.track} ${
               styles[`track${track.id % 3 === 1 ? '-1' : track.id % 3 === 2 ? '-2' : '-3'}`]
             }`}
@@ -61,7 +65,7 @@ const Admin = () => {
               <p>{track.description}</p>
             </div>
             <img src={track.image} alt={track.title} className={styles.image} />
-          </div>
+          </Link>
         ))}
       </div>
       <button  onClick={() => navigate('/admin/addFaculty')}>

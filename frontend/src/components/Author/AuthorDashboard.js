@@ -57,6 +57,11 @@ const AuthorDashboard = () => {
     setShowAuthorDetails(!showAuthorDetails);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <div
       style={{
@@ -71,7 +76,7 @@ const AuthorDashboard = () => {
       }}
     >
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>{track.title}</h1>
-
+      <button style={{"top": "10px", "right": "10px"} } onClick={handleLogout}>Logout</button>
       <table
         style={{
           width: "100%",
@@ -141,7 +146,6 @@ const AuthorDashboard = () => {
               {track.venue}
             </td>
           </tr>
-         
           <tr>
             <td
               style={{

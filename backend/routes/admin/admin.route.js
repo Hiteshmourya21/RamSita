@@ -1,7 +1,6 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { authMiddleware } from "../../middleware/auth.middleware.js";
 import Track from "../../model/Track.model.js";
 import { sendTrackAssignmentEmail, sendTrackCancelationEmail } from "../../lib/mail.js";
 import EmailData from "../../model/EmailData.model.js";
@@ -11,9 +10,6 @@ import Session from "../../model/Session.model.js";
 const router = express.Router();
 const SECRET_KEY = process.env.SECRET_KEY || "your_secret_key";
 
-router.get("/dashboard", authMiddleware(["admin"]), (req, res) => {
-    res.json({ message: "Welcome to Admin Dashboard" });
-  });
 
 
   router.post("/track/save", async (req, res) => {

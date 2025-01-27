@@ -241,9 +241,9 @@ const generateReport = (format) => {
                 <option value=""></option>
                 <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 337">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 337 </option>
                 <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 343">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 343 </option>
-                <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 285">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 285 </option>
+                <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 340">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 340 </option>
                 <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 339">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 339</option>
-                <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 341">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 341</option>
+                <option value="AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 342">AITR 3rd Block CSIT Dept. 3rd Floor Lab No. 342</option>
               </select>
             </th>
             <td>

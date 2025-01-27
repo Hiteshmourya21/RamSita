@@ -6,6 +6,7 @@ import Session from "../../model/Session.model.js";
 import Author from "../../model/Author.model.js";
 import Track from "../../model/Track.model.js";
 import { sendAuthurMail } from "../../lib/mail.js";
+import authMiddleware from "../../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -165,6 +166,45 @@ router.post("/login", async (req, res) => {
       res.status(500).json({ message: "Error logging in." });
     }
   });
+
+  router.get("/getCurrentUser", authMiddleware(["admin", "sessionChair", "author"]), async (req, res) => {
+    try {
+      const { id, role } = req.user;
+  
+      let user;
+      let email;
+      switch (role) {
+        case "admin":
+          user = await Admin.findById(id);
+          email = user.email;
+          break;
+        case "sessionChair":
+          user = await Session.findById(id);
+          email = user.email;
+          break;
+        case "author":
+          user = await Author.findById(id);
+          email = user.pid;
+          break;
+        default:
+          return res.status(400).json({ message: "Invalid role specified." });
+      }
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+      }
+  
+      res.json({
+        id: user._id,
+        email: email,
+        role: role,
+      });
+    } catch (err) {
+      console.error("Error in getCurrentUser:", err);
+      res.status(500).json({ message: "Error getting current user." });
+    }
+  });
+  
   
 
 export default router;

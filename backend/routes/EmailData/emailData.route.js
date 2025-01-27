@@ -1,7 +1,5 @@
 import express from "express";
-import EmailData from "../../model/EmailData.model.js";
 import Track from "../../model/Track.model.js";
-import { authMiddleware } from "../../middleware/auth.middleware.js";
 import Session from "../../model/Session.model.js";
 import Author from "../../model/Author.model.js";
 import mongoose from "mongoose";

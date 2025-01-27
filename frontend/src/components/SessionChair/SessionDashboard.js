@@ -74,6 +74,10 @@ const SessionDashboard = () => {
   };
 
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  }
   return (
     <div>
       {/* Container for Venue Details */}
@@ -81,6 +85,7 @@ const SessionDashboard = () => {
       <div className="container">
         <header>
           <h1>RAMSITA-2025</h1>
+          <button style={{"float":"right"}} onClick={handleLogout}>LogOut</button>
         </header>
         <table>
           <tr>
