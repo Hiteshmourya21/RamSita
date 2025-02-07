@@ -55,7 +55,7 @@ router.get('/getDetail', async (req, res) => {
         // console.log(id);
       const authors = await Author.find({ track : id }); 
       for(const author of authors){
-        author.scores.marks = author.scores.originality + author.scores.relevance + author.scores.quality + author.scores.clarity + author.scores.presentation;
+        author.scores.marks = author.scores.marks !==0 ? author.scores.marks :  author.scores.originality + author.scores.relevance + author.scores.quality + author.scores.clarity + author.scores.presentation;
       }
     //   console.log(authors);
       res.json(authors);
