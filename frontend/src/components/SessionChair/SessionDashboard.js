@@ -111,7 +111,7 @@ const SessionDashboard = () => {
               <td>
                 <th>
                 End Time:-
-                <span style={{"fontWeight":"normal"}}>{addTime(track.time, 4, 00)} </span>
+                <span style={{"fontWeight":"normal"}}>{addTime(track.time, 4, 0)} </span>
                 </th>
               </td>
           </tr>
