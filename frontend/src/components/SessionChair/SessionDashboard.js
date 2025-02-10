@@ -111,7 +111,7 @@ const SessionDashboard = () => {
               <td>
                 <th>
                 End Time:-
-                <span style={{"fontWeight":"normal"}}>{addTime(track.time, 1, 50)} </span>
+                <span style={{"fontWeight":"normal"}}>{addTime(track.time, 4, 00)} </span>
                 </th>
               </td>
           </tr>
@@ -314,7 +314,7 @@ const SessionDashboard = () => {
                   </select>
                 </td>
                 <td rowSpan={author.members.length}>
-                    <select value={author.isOnline} style={{color : author.isOnline ? "green" : "red", fontSize : "16px"}}>
+                    <select value={author.isOnline} onChange={(e) => {const updatedAuthors = [...authorsData]; updatedAuthors[index].isOnline = e.target.value; setAuthorsData(updatedAuthors);}} style={{color : author.isOnline ? "green" : "red", fontSize : "16px"}}>
                       <option value="false">Offline</option>
                       <option value="true">Online</option>
                     </select>
