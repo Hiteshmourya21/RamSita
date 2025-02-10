@@ -79,7 +79,7 @@ const SessionDashboard = () => {
     navigate("/");
   }
   return (
-    <div>
+<div>
       {/* Container for Venue Details */}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
       <div className="container">
@@ -162,14 +162,13 @@ const SessionDashboard = () => {
         <table>
           <thead>
             <tr>
-              <th>Paper ID</th>
-              <th>Paper Title</th>
-              <th>Author Name</th>
+              <th>CH ID</th>
+              <th>Team Name</th>
+              <th>Team Member</th>
               <th>Present</th>
               <th>Originality</th>
-              <th>Relevance</th>
-              <th>Quality</th>
-              <th>Clarity</th>
+              <th>Report Creation</th>
+              <th>Timely Submission</th>
               <th>Presentation</th>
               <th>Marks</th>
               <th>Status</th>
@@ -242,23 +241,6 @@ const SessionDashboard = () => {
                       }
                       const updatedMarks = [...authorsData];
                       updatedMarks[index].scores.quality = e.target.value;
-                      // console.log(updatedMarks);
-                      setAuthorsData(updatedMarks);
-                    }}
-                  />
-                </td>
-                <td rowSpan={author.members.length}>
-                  <input
-                    type="number"
-                    value={author.scores.clarity}
-                    min="0"
-                    max="10"
-                    onChange={(e) => {
-                      if(e.target.value>10){
-                        e.target.value=10;
-                      }
-                      const updatedMarks = [...authorsData];
-                      updatedMarks[index].scores.clarity = e.target.value;
                       // console.log(updatedMarks);
                       setAuthorsData(updatedMarks);
                     }}
